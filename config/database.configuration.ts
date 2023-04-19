@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm"
+import {User} from "../src/entities/User/User.entity";
 
-const myDataSource = new DataSource({
+export const myDataSource = new DataSource({
     type: "mysql",
     host: process.env.DATA_HOST,
     port: Number(process.env.DATA_PORT),
@@ -8,9 +9,9 @@ const myDataSource = new DataSource({
     password: process.env.DATA_PASSWORD,
     database: process.env.DATA_DATABASE,
     entities: [
-
+        User,
     ],
     entityPrefix: process.env.DATA_PREFIX,
-    logging: true,
-    synchronize: true,
+    logging: process.env.APP_ENV !== 'prod',
+    synchronize: process.env.APP_ENV !== 'prod',
 })
