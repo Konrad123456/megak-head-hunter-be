@@ -2,6 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 require('dotenv').config();
+import { myDataSource } from "./config/database.configuration";
+
+myDataSource
+    .initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization:", err)
+    })
 
 const app = express();
 const URL = process.env.APP_URL || 'http://localhost';
