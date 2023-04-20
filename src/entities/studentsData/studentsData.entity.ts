@@ -27,19 +27,19 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'mediumtext' })
   bio: string;
 
-  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.Irrelavant, nullable: true })
+  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.IRRELAVANT, nullable: true })
   expectedTypeWork: expectedTypeWorkEntity;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   targetWorkCity: string;
 
-  @Column({ type: 'enum', enum: ContractType, default: ContractType.NoPreference })
+  @Column({ type: 'enum', enum: ContractType, default: ContractType.NO_PREFERENCE })
   expectedContractType: ContractType;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   expectedSalary: number;
 
-  @Column({ type: 'enum', enum: choiceYesNO, default: choiceYesNO.No })
+  @Column({ type: 'enum', enum: choiceYesNO, default: choiceYesNO.NO })
   canTakeApprenticeship: choiceYesNO;
 
   @Column({ type: 'tinyint', length: 4, default: 0 })
@@ -54,6 +54,6 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'text', nullable: true })
   courses: string;
 
-  @Column({ type: 'enum', enum: StudentStatus, default: StudentStatus.Available })
+  @Column({ type: 'enum', enum: StudentStatus, default: StudentStatus.AVAILABLE })
   status: StudentStatus;
 }
