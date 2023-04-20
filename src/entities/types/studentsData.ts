@@ -1,27 +1,27 @@
 export enum expectedTypeWorkEntity {
-  Irrelavant,
-  AtLocatiion,
-  RedyToCarryOut,
-  OnlyRemotely,
-  Hybrid,
+  IRRELAVANT,
+  ATLOCATIION,
+  REDY_TO_CARRYOUT,
+  ONLY_REMOTELY,
+  HYBRID,
 }
 
 export enum ContractType {
-  NoPreference,
-  UoP_only,
-  B2B_possible,
-  UZ_UoD_possible,
+  NO_PREFERENCE,
+  UOP_ONLY,
+  B2B_POSSIBLE,
+  UZ_UOD_POSSIBLE,
 }
 
 export enum choiceYesNO {
-  No,
-  Yes,
+  NO,
+  YES,
 }
 
 export enum StudentStatus {
-  Available,
-  DuringConversation,
-  Hired,
+  AVAILABLE,
+  DURING_CONVERSATION,
+  HIRED,
 }
 
 export interface StudentsDataInterface {
