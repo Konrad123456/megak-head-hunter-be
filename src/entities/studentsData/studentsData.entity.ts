@@ -6,19 +6,19 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @PrimaryColumn()
   id: string;
 
-  @Column({ type: 'char', length: 12 })
+  @Column({ type: 'varchar', length: 12, nullable: true })
   tel: string;
 
-  @Column({ type: 'char', length: 50 })
+  @Column({ type: 'varchar', length: 50 })
   firstName: string;
 
-  @Column({ type: 'char', length: 50 })
+  @Column({ type: 'varchar', length: 50 })
   lastName: string;
 
-  @Column({ type: 'char', length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   githubUsername: string;
 
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'simple-array', nullable: true })
   portfolioUrls: string[];
 
   @Column({ type: 'simple-array' })
@@ -27,16 +27,16 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'mediumtext' })
   bio: string;
 
-  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.Irrelavant })
+  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.Irrelavant, nullable: true })
   expectedTypeWork: expectedTypeWorkEntity;
 
-  @Column({ type: 'char', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   targetWorkCity: string;
 
   @Column({ type: 'enum', enum: ContractType, default: ContractType.NoPreference })
   expectedContractType: ContractType;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   expectedSalary: number;
 
   @Column({ type: 'enum', enum: choiceYesNO, default: choiceYesNO.No })
@@ -45,15 +45,15 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'tinyint', length: 4, default: 0 })
   monthsOfCommercialExp: number
 
-  @Column({ type: 'tinyint', length: 3 })
+  @Column({ type: 'text', nullable: true })
   education: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   workExperience: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   courses: string;
 
-  @Column({ type: 'enum', enum: StudentStatus, default:  })
+  @Column({ type: 'enum', enum: StudentStatus, default: StudentStatus.Available })
   status: StudentStatus;
 }
