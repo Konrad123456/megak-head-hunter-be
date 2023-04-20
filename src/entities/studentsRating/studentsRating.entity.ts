@@ -19,5 +19,5 @@ export class StudentsData extends BaseEntity implements StudnetsRating {
   teamProjectDegree: number;
 
   @Column({ type: 'simple-array' })
-  bonusProjectUrls: string;
+  bonusProjectUrls: string[];
 }

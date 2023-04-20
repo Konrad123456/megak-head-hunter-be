@@ -4,5 +4,5 @@ export interface StudnetsRating {
   courseEngagment: number;
   projectDegree: number;
   teamProjectDegree: number;
-  bonusProjectUrls: string;
+  bonusProjectUrls: string[];
 }
