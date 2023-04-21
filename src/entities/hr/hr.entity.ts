@@ -12,6 +12,6 @@ export class Hr extends BaseEntity implements hrInterface {
   @Column({ type: 'varchar', length: 255 })
   company: string;
 
-  @Column({ type: 'smallint', length: 3 })
+  @Column({ type: 'smallint' })
   maxReservedStudents: number;
 }

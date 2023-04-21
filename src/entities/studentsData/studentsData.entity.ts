@@ -42,7 +42,7 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'enum', enum: choiceYesNO, default: choiceYesNO.NO })
   canTakeApprenticeship: choiceYesNO;
 
-  @Column({ type: 'tinyint', length: 4, default: 0 })
+  @Column({ type: 'tinyint', default: 0 })
   monthsOfCommercialExp: number
 
   @Column({ type: 'text', nullable: true })
