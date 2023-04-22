@@ -1,10 +1,14 @@
-import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 import { ContractType, StudentStatus, StudentsDataInterface, choiceYesNO, expectedTypeWorkEntity } from '../types/studentsData';
+import { User } from '../User/User.entity';
 
 @Entity('students_data')
 export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @PrimaryColumn()
   id: string;
+  @OneToOne(() => User, { 'cascade': true })
+  @JoinColumn({ name: 'id' })
+  user: User;
 
   @Column({ type: 'varchar', length: 12, nullable: true })
   tel: string;
