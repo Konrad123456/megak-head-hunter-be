@@ -1,10 +1,10 @@
-import express, { Request } from 'express';
+import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
-require('dotenv').config();
-import { myDataSource } from "./config/database.configuration";
-import passport from 'passport';
 import cookieParser from 'cookie-parser';
+require('dotenv').config();
+import passport from 'passport';
+import { myDataSource } from "./config/database.configuration";
 import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
