@@ -3,6 +3,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 require('dotenv').config();
 import { myDataSource } from "./config/database.configuration";
+import { createHRRouter } from './routers/createHR.routers';
 
 myDataSource
     .initialize()
@@ -27,6 +28,9 @@ app.use(rateLimit({
     windowMs: Number(process.env.RATE_LIMITER_WINDOW_MS),
     max: Number(process.env.RATE_LIMITER_MAX)
 }));
+
+// ROUTERS
+app.use('/add_hr', createHRRouter);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);
