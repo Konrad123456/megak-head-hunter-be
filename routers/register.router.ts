@@ -20,7 +20,7 @@ export const registerRouter = Router()
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
     // TODO: ErrorValidate status 400 + message
-    if (!user) throw new Error('Podnay adres amail nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
+    if (!user) throw new Error('Podany adres amail nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
 
     const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
     const test = password.match(regx);
@@ -31,7 +31,7 @@ export const registerRouter = Router()
 
     if (password !== confirmPassword) throw new Error('Podane hasła muszą być takie same.');
 
-    const hashPass = bcrypt.hashSync(password, 14);
+    const hashPass = await bcrypt.hash(password, 14);
 
     await myDataSource.getRepository(User).update({ email: emailLowerCase }, { password: hashPass });
 
