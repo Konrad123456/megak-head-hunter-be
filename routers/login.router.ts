@@ -22,7 +22,7 @@ export const loginRouter = Router()
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
     // TODO: ErrorValidate status 401 + message
-    if (!user) throw new Error('Podnay amail nie istnieje.');
+    if (!user) throw new Error('Podany amail nie istnieje.');
 
     const access = await bcrypt.compare(password, user.password);
 
