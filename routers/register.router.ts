@@ -20,7 +20,7 @@ export const registerRouter = Router()
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
     // TODO: ErrorValidate status 400 + message
-    if (!user) throw new Error('Podany adres amail nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
+    if (!user) throw new Error('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
 
     const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
     const test = password.match(regx);
