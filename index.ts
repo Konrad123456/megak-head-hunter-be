@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 require('dotenv').config();
 import { myDataSource } from './config/database.configuration';
 import { errorHandler } from './utils/errorsHandler';
+import { userRouter } from './routers/user.routers';
 
 myDataSource
     .initialize()
@@ -28,6 +29,9 @@ app.use(rateLimit({
     windowMs: Number(process.env.RATE_LIMITER_WINDOW_MS),
     max: Number(process.env.RATE_LIMITER_MAX)
 }));
+
+// ROUTERS
+app.use('/user', userRouter);
 
 app.use(errorHandler);
 
