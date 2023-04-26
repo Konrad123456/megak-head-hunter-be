@@ -10,6 +10,7 @@ import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
 import { refreshRouters } from './routers/refresh.routers';
 import { errorHandler } from './utils/errorsHandler';
+import { userRouter } from './routers/user.routers';
 
 myDataSource
     .initialize()
@@ -50,6 +51,9 @@ app.get('/test', passport.authenticate('jwt', { session: false }), (req: any, re
     const { user } = req;
     res.json({ message: user });
 })
+
+// ROUTERS
+app.use('/user', userRouter);
 
 app.use(errorHandler);
 
