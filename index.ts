@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 require('dotenv').config();
-import { myDataSource } from "./config/database.configuration";
+import { myDataSource } from './config/database.configuration';
+import { errorHandler } from './utils/errorsHandler';
 
 myDataSource
     .initialize()
@@ -27,6 +28,8 @@ app.use(rateLimit({
     windowMs: Number(process.env.RATE_LIMITER_WINDOW_MS),
     max: Number(process.env.RATE_LIMITER_MAX)
 }));
+
+app.use(errorHandler);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);
