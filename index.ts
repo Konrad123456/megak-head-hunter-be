@@ -9,6 +9,7 @@ import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
 import { refreshRouters } from './routers/refresh.routers';
+import { errorHandler } from './utils/errorsHandler';
 
 myDataSource
     .initialize()
@@ -49,6 +50,8 @@ app.get('/test', passport.authenticate('jwt', { session: false }), (req: any, re
     const { user } = req;
     res.json({ message: user });
 })
+
+app.use(errorHandler);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);

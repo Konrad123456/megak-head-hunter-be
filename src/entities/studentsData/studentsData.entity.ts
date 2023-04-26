@@ -1,10 +1,14 @@
-import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 import { ContractType, StudentStatus, StudentsDataInterface, choiceYesNO, expectedTypeWorkEntity } from '../types/studentsData';
+import { User } from '../User/User.entity';
 
 @Entity('students_data')
 export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @PrimaryColumn()
   id: string;
+  @OneToOne(() => User, { 'cascade': true })
+  @JoinColumn({ name: 'id' })
+  user: User;
 
   @Column({ type: 'varchar', length: 12, nullable: true })
   tel: string;
@@ -42,7 +46,7 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'enum', enum: choiceYesNO, default: choiceYesNO.NO })
   canTakeApprenticeship: choiceYesNO;
 
-  @Column({ type: 'tinyint', length: 4, default: 0 })
+  @Column({ type: 'tinyint', default: 0 })
   monthsOfCommercialExp: number
 
   @Column({ type: 'text', nullable: true })
