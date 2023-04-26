@@ -1,7 +1,8 @@
 import { DataSource } from "typeorm"
-import {User} from "../src/entities/User/User.entity";
+import { User } from "../src/entities/User/User.entity";
 import { StudentsData } from "../src/entities/studentsData/studentsData.entity";
 import { Hr } from "../src/entities/hr/hr.entity";
+import { StudentsRating } from "../src/entities/studentsRating/studentsRating.entity";
 
 export const myDataSource = new DataSource({
     type: "mysql",
@@ -11,7 +12,7 @@ export const myDataSource = new DataSource({
     password: process.env.DATA_PASSWORD,
     database: process.env.DATA_DATABASE,
     entities: [
-        User, StudentsData, Hr
+        User, StudentsData, Hr, StudentsRating,
     ],
     entityPrefix: process.env.DATA_PREFIX,
     logging: process.env.APP_ENV !== 'prod',
