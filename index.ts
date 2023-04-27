@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 require('dotenv').config();
 import passport from 'passport';
-import { myDataSource } from "./config/database.configuration";
+import { myDataSource } from './config/database.configuration';
 import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
@@ -15,10 +15,10 @@ import { userRouter } from './routers/user.routers';
 myDataSource
     .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        console.log('Data Source has been initialized!');
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
+        console.error('Error during Data Source initialization:', err);
     })
 
 const app = express();
@@ -47,12 +47,7 @@ app.use('/logout', logoutRouters);
 app.use('/refresh-token', refreshRouters);
 
 // TEST
-app.get('/test', passport.authenticate('jwt', { session: false }), (req: any, res) => {
-    const { user } = req;
-    res.json({ message: user });
-})
-
-// ROUTERS
+app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
 
 app.use(errorHandler);
