@@ -4,7 +4,8 @@ import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 require('dotenv').config();
 import passport from 'passport';
-import { myDataSource } from './config/database.configuration';
+import { myDataSource } from "./config/database.configuration";
+import { createHRRouter } from './routers/createHR.routers';
 import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
@@ -24,9 +25,11 @@ myDataSource
 const app = express();
 const URL = process.env.APP_URL || 'http://localhost';
 const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 3002;
+const FE_PORT = process.env.APP_FE_PORT ? Number(process.env.APP_PORT) : 3000;
 
 app.use(cors({
-    origin: `${URL}:${PORT}`
+    origin: `${URL}:${FE_PORT}`,
+    credentials: true,
 }));
 
 app.use(express.json());
@@ -49,6 +52,9 @@ app.use('/refresh-token', refreshRouters);
 // TEST
 app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
+
+// ROUTERS
+app.use('/add_hr', createHRRouter);
 
 app.use(errorHandler);
 
