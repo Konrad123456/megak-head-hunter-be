@@ -2,9 +2,10 @@ import { Router } from 'express';
 import { getStudentsList } from './user/getStudentsList';
 
 export const userRouter = Router()
-  .get('/', async (req, res, next) => {
+  .get('/:page/:limit', async (req, res, next) => {
     // Students list
-    getStudentsList(req, res, next) ;
+    // Example url http://localhost:3001/user/2/10
+    getStudentsList(req, res, next);
   })
 
   .post('/:id', async (req, res, next) => {
