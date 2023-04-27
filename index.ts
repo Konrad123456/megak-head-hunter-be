@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 require('dotenv').config();
 import passport from 'passport';
 import { myDataSource } from "./config/database.configuration";
+import { createHRRouter } from './routers/createHR.routers';
 import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
@@ -56,6 +57,9 @@ app.get('/test', passport.authenticate('jwt', { session: false }), (req: any, re
 app.use('/user', userRouter);
 
 app.use(errorHandler);
+
+// ROUTERS
+app.use('/add_hr', createHRRouter);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);
