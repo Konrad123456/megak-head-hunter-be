@@ -25,9 +25,11 @@ myDataSource
 const app = express();
 const URL = process.env.APP_URL || 'http://localhost';
 const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 3002;
+const FE_PORT = process.env.APP_FE_PORT ? Number(process.env.APP_PORT) : 3000;
 
 app.use(cors({
-    origin: `${URL}:${PORT}`
+    origin: `${URL}:${FE_PORT}`,
+    credentials: true,
 }));
 
 app.use(express.json());
@@ -56,10 +58,10 @@ app.get('/test', passport.authenticate('jwt', { session: false }), (req: any, re
 // ROUTERS
 app.use('/user', userRouter);
 
-app.use(errorHandler);
-
 // ROUTERS
 app.use('/add_hr', createHRRouter);
+
+app.use(errorHandler);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);
