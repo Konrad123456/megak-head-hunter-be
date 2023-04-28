@@ -31,7 +31,7 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'mediumtext' })
   bio: string;
 
-  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.IRRELAVANT, nullable: true })
+  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.IRRELEVANT, nullable: true })
   expectedTypeWork: expectedTypeWorkEntity;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
