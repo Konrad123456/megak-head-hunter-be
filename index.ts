@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
@@ -49,7 +50,6 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouters);
 app.use('/refresh-token', refreshRouters);
 
-// ROUTERS
 app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
 app.use('/add_hr', createHRRouter);
