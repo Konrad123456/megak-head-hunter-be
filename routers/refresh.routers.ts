@@ -20,7 +20,7 @@ export const refreshRouters = Router().get('/', async (req, res) => {
 
   jwt.verify(refreshToken, TOKEN_REFRESH_KEY, async (err, data: any) => {
 
-    if (err) throw new ValidationError('Dostęp zabroniony.', 401);
+    if (err) throw new ValidationError('Dostęp zabroniony.', 403);
 
     const user = await myDataSource.getRepository(User).findOneBy({ id: data.id });
 
