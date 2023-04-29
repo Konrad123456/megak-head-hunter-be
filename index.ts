@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 require('dotenv').config();
 import passport from 'passport';
 import { myDataSource } from "./config/database.configuration";
-import { createHRRouter } from './routers/createHR.routers';
+import { hrRouter } from './routers/createHR.routers';
 import { registerRouter } from './routers/register.router';
 import { loginRouter } from './routers/login.router';
 import { logoutRouters } from './routers/logout.routers';
@@ -52,7 +52,7 @@ app.use('/refresh-token', refreshRouters);
 
 app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
-app.use('/add_hr', createHRRouter);
+app.use('/hr', hrRouter);
 
 app.use(errorHandler);
 
