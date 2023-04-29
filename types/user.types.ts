@@ -45,7 +45,30 @@ export type StudentsListResponse = Readonly<StudentsList[]>;
 // VIEW - STUDENET CV
 export type StudentsCVResponse = Readonly<Omit<UserInterface & StudnetsRating & StudentsDataInterface, OmitPropertyOfUser>>
 
+// VIEW - One student view
+export type OneStudentResponse = Omit<StudentsDataInterface,"id" | "status"> & Pick<UserInterface,"email">
+
 type StudntsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>
 
 // VIEW STUDETS TO TALK
 export type StudntsToTalkListResposne = StudntsToTalkList[];
+
+export enum expectedTypeWorkEntity {
+  IRRELEVANT,
+  ATLOCATION,
+  READY_TO_CARRYOUT,
+  ONLY_REMOTELY,
+  HYBRID,
+}
+
+export enum ContractType {
+  NO_PREFERENCE,
+  UOP_ONLY,
+  B2B_POSSIBLE,
+  UZ_UOD_POSSIBLE,
+}
+
+export enum choiceYesNO {
+  NO,
+  YES,
+}
