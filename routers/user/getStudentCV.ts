@@ -9,7 +9,7 @@ import { DestructuringToStudentsCV } from "../../utils/destructuringToStudentsCV
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
-export const getStudentsCV = async (req: Request, res: Response, next: NextFunction) => {
+export const getStudentCV = async (req: Request, res: Response, next: NextFunction) => {
   const { id, role } = req.user as RequestAndPayloadUser
 
   if (role !== Roles.HR && role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
