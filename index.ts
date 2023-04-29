@@ -49,11 +49,9 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouters);
 app.use('/refresh-token', refreshRouters);
 
-// TEST
+// ROUTERS
 app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
-
-// ROUTERS
 app.use('/add_hr', createHRRouter);
 
 app.use(errorHandler);
