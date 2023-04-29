@@ -1,12 +1,14 @@
-import { Router } from 'express';
+import { Request, Router } from 'express';
 import { myDataSource } from '../config/database.configuration';
 import { Hr } from '../src/entities/hr/hr.entity';
 import { User } from '../src/entities/User/User.entity';
 import { Roles } from '../src/entities/types/Roles';
 import { validate } from 'class-validator';
-import { createRegisterToken } from '../utils/createRegisterToken';
+import { UserPayloadData, createRegisterToken } from '../utils/createRegisterToken';
+import { ValidationError } from '../utils/errorsHandler';
 
-type RequestBodyHR = Omit<Partial<Hr> & Partial<User>, 'id' | 'password' | 'token' | 'registerToken' | 'role'>
+type RequestBodyHR = Omit<Partial<Hr> & Partial<User>, 'id' | 'password' | 'token' | 'registerToken' | 'role'>;
+type RequestAndPayloadUser = Request & UserPayloadData;
 
 const validationErrorOptions = {
   validationError: {
@@ -14,14 +16,17 @@ const validationErrorOptions = {
   }
 }
 
-export const createHRRouter = Router()
+export const hrRouter = Router()
   .post('/', async (req, res) => {
+    const { id, role } = req.user as RequestAndPayloadUser
+
+    if (role !== Roles.ADMIN) throw new ValidationError('Access denied.', 401);
+
     const { email, fullName, company, maxReservedStudents } = req.body as RequestBodyHR;
 
-    // TODO: ErrorValidate status 400 + message
-    if (!email || !fullName || !company || !maxReservedStudents) throw new Error('Invalid data.');
+    if (!email || !fullName || !company || !maxReservedStudents) throw new ValidationError('Invalid data.', 400);
+    
     const emailLowerCase = email.toLocaleLowerCase();
-
     const user = new User();
     const hr = new Hr();
     hr.user = user;
@@ -47,11 +52,15 @@ export const createHRRouter = Router()
         return val;
       }).join('; ')
 
-      throw new Error(message);
+      throw new ValidationError(message, );
     }
 
-    const result = await myDataSource.manager.save(hr);
-    
+    const result = (await myDataSource.manager.save(hr)) as Hr & {code: string};
+
+    if (result?.code === 'ER_DUP_ENTRY') throw new ValidationError(`Duplicate entry '${email}'`, 500);
+    if (result?.code !== 'ER_DUP_ENTRY') throw new ValidationError('Internal Server Error', 500);
+
+
     const registerToken = createRegisterToken(user);
     await myDataSource.getRepository(User).update({ id: user.id }, { registerToken });
 
