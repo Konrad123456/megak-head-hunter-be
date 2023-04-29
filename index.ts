@@ -3,6 +3,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 require('dotenv').config();
+import 'express-async-errors';
 import passport from 'passport';
 import { myDataSource } from "./config/database.configuration";
 import { createHRRouter } from './routers/createHR.routers';
