@@ -25,7 +25,7 @@ myDataSource
 const app = express();
 const URL = process.env.APP_URL || 'http://localhost';
 const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 3002;
-const FE_PORT = process.env.APP_FE_PORT ? Number(process.env.APP_PORT) : 3000;
+const FE_PORT = process.env.APP_FE_PORT ? Number(process.env.APP_FE_PORT) : 3000;
 
 app.use(cors({
     origin: `${URL}:${FE_PORT}`,
