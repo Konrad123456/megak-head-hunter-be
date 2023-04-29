@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { myDataSource } from '../config/database.configuration';
 import { User } from '../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
+import { ValidationError } from '../utils/errorsHandler';
 
 type UserRegiserData = {
   email: string;
@@ -15,21 +16,21 @@ export const registerRouter = Router()
     const emailLowerCase = email.toLocaleLowerCase();
 
     // TODO: ErrorValidate status 400 + message
-    if (!emailLowerCase.includes('@')) throw new Error('Niepoprawny adres amail.',);
+    if (!emailLowerCase.includes('@')) throw new ValidationError('Niepoprawny adres amail.', 400);
 
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
     // TODO: ErrorValidate status 400 + message
-    if (!user) throw new Error('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
+    if (!user) throw new ValidationError('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.', 400);
 
     const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
     const test = password.match(regx);
 
     // TODO: ErrorValidate status 400 + message
-    if (!test) throw new Error('Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.');
+    if (!test) throw new ValidationError('Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.', 400);
 
 
-    if (password !== confirmPassword) throw new Error('Podane hasła muszą być takie same.');
+    if (password !== confirmPassword) throw new ValidationError('Podane hasła muszą być takie same.', 400);
 
     const hashPass = await bcrypt.hash(password, 14);
 
