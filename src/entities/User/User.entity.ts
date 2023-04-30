@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
 import { UserInterface } from "../types/User";
 import { Roles } from "../types/Roles";
-import { Contains } from 'class-validator';
+import { Contains, IsEnum } from 'class-validator';
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
@@ -24,5 +24,6 @@ export class User extends BaseEntity implements UserInterface {
     registerToken: string
 
     @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
+    @IsEnum(Roles)
     role: Roles
 }
