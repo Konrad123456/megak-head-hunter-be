@@ -10,32 +10,36 @@ import { DestructuringToGetOne } from "../../utils/destructuringGetOne";
 type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const getOneStudent = async (req: Request, res: Response, next: NextFunction) => {
-  const { id, role } = req.user as RequestAndPayloadUser
+  try {
+    const { id, role } = req.user as RequestAndPayloadUser;
 
-  if (role !== Roles.HR && role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
+    if (role !== Roles.HR && role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
 
-  const userId = req.params.id;
+    const userId = req.params.id;
 
-  const results = await myDataSource
-    .getRepository(StudentsRating)
-    .createQueryBuilder('studentsRating')
-    .leftJoinAndSelect('studentsRating.user', 'user')
-    .leftJoinAndSelect('studentsRating.studentsData', 'studentsData')
-    .where(`user.role = '${Roles.STUDENT}'`)
-    .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
-    .andWhere('studentsRating.id = :userId', { userId })
-    .orderBy('studentsData.lastName, studentsData.firstName')
-    .getOne();
+    const results = await myDataSource
+      .getRepository(StudentsRating)
+      .createQueryBuilder('studentsRating')
+      .leftJoinAndSelect('studentsRating.user', 'user')
+      .leftJoinAndSelect('studentsRating.studentsData', 'studentsData')
+      .where(`user.role = '${Roles.STUDENT}'`)
+      .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
+      .andWhere('studentsRating.id = :userId', { userId })
+      .orderBy('studentsData.lastName, studentsData.firstName')
+      .getOne();
 
-  if (!results) return res.json([]);
+    if (!results) return res.json([]);
 
-  const data = {
-    ...results,
-    ...results.user,
-    ...results.studentsData,
+    const data = {
+      ...results,
+      ...results.user,
+      ...results.studentsData,
+    }
+
+    const userCV = new DestructuringToGetOne(data).returnData();
+
+    res.json(userCV);
+  } catch (err) {
+    next(err);
   }
-
-  const userCV = new DestructuringToGetOne(data).returnData();
-
-  res.json(userCV);
 }

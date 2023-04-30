@@ -9,19 +9,23 @@ import { StudentsData } from "../../src/entities/studentsData/studentsData.entit
 type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const getAllStudentsCount = async (req: Request, res: Response, next: NextFunction) => {
-  const { id, role } = req.user as RequestAndPayloadUser
+  try {
+    const { id, role } = req.user as RequestAndPayloadUser;
 
-  if (role !== Roles.HR) throw new ValidationError('Access denied.', 401);
+    if (role !== Roles.HR) throw new ValidationError('Access denied.', 401);
 
-  const result = await myDataSource
-    .getRepository(StudentsData)
-    .createQueryBuilder('studentsData')
-    .leftJoinAndSelect('studentsData.user', 'user')
-    .where(`user.role = '${Roles.STUDENT}'`)
-    .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
-    .getCount();
+    const result = await myDataSource
+      .getRepository(StudentsData)
+      .createQueryBuilder('studentsData')
+      .leftJoinAndSelect('studentsData.user', 'user')
+      .where(`user.role = '${Roles.STUDENT}'`)
+      .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
+      .getCount();
 
-  if (!result) return res.json({count: 0});
+    if (!result) return res.json({ count: 0 });
 
-  res.json({count: result});
+    res.json({ count: result });
+  } catch (err) {
+    next(err);
+  }
 }
