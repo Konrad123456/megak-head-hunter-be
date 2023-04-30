@@ -3,6 +3,8 @@ import { getStudentsList } from './user/getStudentsList';
 import { getStudentCV } from './user/getStudentCV';
 import { getOneStudent } from './user/getOneStudent';
 import { getAllStudentsCount } from './user/getAllStudentsCount';
+import { updateStudentData } from './user/updateStudentData';
+import { changePassword } from './user/changePassword';
 
 export const userRouter = Router()
   // Get students count
@@ -35,17 +37,17 @@ export const userRouter = Router()
     res.json(`Get to talk.`);
   })
 
-  .post('/:id', async (req, res, next) => {
-    // add new user
-    res.json(`Post user: ${req.params.id}`);
+  // add new user
+  .post('/', async (req, res, next) => {
+    res.json(`Post user`);
   })
 
-  .put('/:id', async (req, res, next) => {
-    // update students or hr data
-    res.json(`Put user: ${req.params.id}`);
+  // Update students data
+  .put('/', async (req, res, next) => {
+    updateStudentData(req, res, next);
   })
 
-  .put('/password/:id', async (req, res, next) => {
-    // update students or hr data
-    res.json(`Put pass: ${req.params.id}`);
+  // update students or hr data
+  .put('/password/', async (req, res, next) => {
+    changePassword(req, res, next);
   })
