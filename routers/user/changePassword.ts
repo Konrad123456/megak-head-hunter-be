@@ -5,6 +5,7 @@ import { UserPayloadData } from '../../utils/createTokens';
 import { ChangePasswordRequest } from '../../types';
 import { User } from '../../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
+import { validatePassword } from '../../utils/validatePassword';
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
@@ -21,10 +22,7 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
 
     if (!access) throw new ValidationError('Incorrect password.', 401);
 
-    const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
-    const test = password.match(regx);
-
-    if (!test) throw new ValidationError('The password must contain between 8 and 20 characters. Lowercase and uppercase letters, numbers and special characters..', 400);
+    if (validatePassword(password)) throw new ValidationError('The password must contain between 8 and 20 characters. Lowercase and uppercase letters, numbers and special characters..', 400);
 
     if (password !== confirmPassword) throw new ValidationError('Passwords must be the same.', 400);
 

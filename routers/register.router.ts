@@ -3,6 +3,7 @@ import { myDataSource } from '../config/database.configuration';
 import { User } from '../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
 import { ValidationError } from '../utils/errorsHandler';
+import { validatePassword } from '../utils/validatePassword';
 
 type UserRegiserData = {
   email: string;
@@ -21,11 +22,7 @@ export const registerRouter = Router()
 
     if (!user) throw new ValidationError('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.', 400);
 
-    const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
-    const test = password.match(regx);
-
-    if (!test) throw new ValidationError('Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.', 400);
-
+    if (validatePassword(password)) throw new ValidationError('Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.', 400);
 
     if (password !== confirmPassword) throw new ValidationError('Podane hasła muszą być takie same.', 400);
 
