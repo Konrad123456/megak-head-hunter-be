@@ -11,7 +11,7 @@ type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id, role } = req.user as RequestAndPayloadUser;
+    const { id } = req.user as RequestAndPayloadUser;
     const { currentPassword, password, confirmPassword } = req.body as ChangePasswordRequest;
 
     const user = await myDataSource.getRepository(User).findOneBy({ id });
