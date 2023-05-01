@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
+import bodyParser from "body-parser";
 require('dotenv').config();
 import 'express-async-errors';
 import passport from 'passport';
@@ -13,6 +14,7 @@ import { logoutRouters } from './routers/logout.routers';
 import { refreshRouters } from './routers/refresh.routers';
 import { errorHandler } from './utils/errorsHandler';
 import { userRouter } from './routers/user.routers';
+import {uploadRouter} from "./routers/upload.router";
 
 myDataSource
     .initialize()
@@ -35,6 +37,12 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json())
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    }),
+)
 
 app.use(rateLimit({
     windowMs: Number(process.env.RATE_LIMITER_WINDOW_MS),
@@ -61,6 +69,8 @@ app.use('/user', userRouter);
 
 // ROUTERS
 app.use('/add_hr', createHRRouter);
+
+app.use('/upload', uploadRouter);
 
 app.use(errorHandler);
 
