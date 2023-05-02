@@ -15,17 +15,18 @@ export const loginRouter = Router()
   .post('/', async (req, res) => {
     const { email, password } = req.body as UserLoginData;
 
-    if (!email || !password) throw new ValidationError('Niepoprawny login lub hasło.', 401);
+    if (!email || !password) throw new ValidationError('Incorrect login or password.', 401);
 
     const emailLowerCase = email.toLocaleLowerCase();
 
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
-    if (!user) throw new ValidationError('Podany amail nie istnieje.', 401);
+    if (!user) throw new ValidationError('The given email does not exist.', 401);
+    if (!user.isActive) throw new ValidationError('Unauthorized', 401);
 
     const access = await bcrypt.compare(password, user.password);
 
-    if (!access) throw new ValidationError('Niepoprawne hasło.', 401);
+    if (!access) throw new ValidationError('Incorrect password.', 401);
 
     const { accessToken, refreshToken } = createTokens(user);
     await myDataSource.getRepository(User).update({ id: user.id }, { token: refreshToken });
