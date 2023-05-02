@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn} from "typeorm"
 import { UserInterface } from "../types/User";
 import { Roles } from "../types/Roles";
 import { Contains } from 'class-validator';
+import {StudentsRating} from "../studentsRating/studentsRating.entity";
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
@@ -25,4 +26,8 @@ export class User extends BaseEntity implements UserInterface {
 
     @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
     role: Roles
+
+    @OneToOne(() => StudentsRating)
+    @JoinColumn()
+    studentData: StudentsRating
 }

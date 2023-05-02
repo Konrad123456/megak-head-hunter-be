@@ -1,4 +1,6 @@
-export interface StudnetsRating {
+import {User} from "../User/User.entity";
+
+export interface StudnetsRatingInterface {
   id: string;
   courseCompletion: number;
   courseEngagment: number;
@@ -6,3 +8,5 @@ export interface StudnetsRating {
   teamProjectDegree: number;
   bonusProjectUrls: string[];
 }
+
+export interface StudentsRatingWithEmail extends Omit<StudnetsRatingInterface, 'id'> , Pick<User, 'email'> {};
