@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { myDataSource } from '../config/database.configuration';
 import { User } from '../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
+import { ValidationError } from '../utils/errorsHandler';
 
 type UserRegiserData = {
   email: string;
@@ -21,6 +22,7 @@ export const registerRouter = Router()
 
     // TODO: ErrorValidate status 400 + message
     if (!user) throw new Error('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
+    if (user.isActive) throw new ValidationError('The user is registered.', 401);
 
     const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
     const test = password.match(regx);
@@ -33,7 +35,7 @@ export const registerRouter = Router()
 
     const hashPass = await bcrypt.hash(password, 14);
 
-    await myDataSource.getRepository(User).update({ email: emailLowerCase }, { password: hashPass });
+    await myDataSource.getRepository(User).update({ email: emailLowerCase }, { password: hashPass, registerToken: null });
 
     res.status(200).json({ message: 'Dane zapisane.' });
   });
