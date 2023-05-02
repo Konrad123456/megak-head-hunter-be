@@ -25,4 +25,7 @@ export class User extends BaseEntity implements UserInterface {
 
     @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
     role: Roles
+    
+    @Column({type: 'boolean', default: false })
+    isActive: boolean
 }
