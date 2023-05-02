@@ -25,7 +25,7 @@ export const hrRouter = Router()
     const { email, fullName, company, maxReservedStudents } = req.body as RequestBodyHR;
 
     if (!email || !fullName || !company || !maxReservedStudents) throw new ValidationError('Invalid data.', 400);
-    
+
     const emailLowerCase = email.toLocaleLowerCase();
     const user = new User();
     const hr = new Hr();
@@ -50,12 +50,12 @@ export const hrRouter = Router()
         const [, val] = Object.entries(err.constraints)[0];
 
         return val;
-      }).join('; ')
+      }).join('; ');
 
-      throw new ValidationError(message, );
+      throw new ValidationError(message, 401);
     }
 
-    const result = (await myDataSource.manager.save(hr)) as Hr & {code: string};
+    const result = (await myDataSource.manager.save(hr)) as Hr & { code: string };
 
     if (result?.code === 'ER_DUP_ENTRY') throw new ValidationError(`Duplicate entry '${email}'`, 500);
     if (result?.code !== 'ER_DUP_ENTRY') throw new ValidationError('Internal Server Error', 500);
