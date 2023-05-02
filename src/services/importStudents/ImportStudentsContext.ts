@@ -4,6 +4,7 @@ import {myDataSource} from "../../../config/database.configuration";
 import { StudentsRating } from "../../entities/studentsRating/studentsRating.entity";
 import {Roles} from "../../entities/types/Roles";
 import {randomUUID} from "crypto";
+import {createRegisterToken} from "../../../utils/createRegisterToken";
 
 export class ImportStudentsToDB {
 
@@ -13,9 +14,8 @@ export class ImportStudentsToDB {
             const user = new User();
             user.email = studentData.email;
             user.password = randomUUID();
-            user.token = randomUUID();
             user.role = Roles.STUDENT;
-            user.registerToken = randomUUID();
+            user.registerToken = createRegisterToken(user);
 
             const userRating = new StudentsRating();
             userRating.courseCompletion = studentData.courseCompletion;
