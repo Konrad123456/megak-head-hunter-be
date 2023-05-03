@@ -1,4 +1,4 @@
-export interface StudnetsRating {
+export interface StudentsRatingInterface {
   id: string;
   courseCompletion: number;
   courseEngagment: number;
