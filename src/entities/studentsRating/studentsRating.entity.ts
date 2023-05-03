@@ -1,15 +1,13 @@
-import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
-import { StudnetsRating } from '../types/studentsRating';
-import { User } from '../User/User.entity';
-import { StudentsData } from '../studentsData/studentsData.entity';
-import { IsInt, Length, Min, Max, IsArray } from 'class-validator';
+import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
+import { StudentsRatingInterface } from '../types/studentsRating';
+import { IsInt, Min, Max, IsArray } from 'class-validator';
 
 const optionsMessage = (type: string) => (
   { message: `$property: ${type} value is $constraint1.` }
 )
 
 @Entity('students_rating')
-export class StudentsRating extends BaseEntity implements StudnetsRating {
+export class StudentsRating extends BaseEntity implements StudentsRatingInterface {
   @PrimaryColumn()
   id: string;
 
@@ -40,12 +38,4 @@ export class StudentsRating extends BaseEntity implements StudnetsRating {
   @Column({ type: 'simple-array' })
   @IsArray()
   bonusProjectUrls: string[];
-
-  @OneToOne(() => User, { 'cascade': true })
-  @JoinColumn({ name: 'id' })
-  user?: User;
-
-  @OneToOne(() => StudentsData, { 'cascade': true })
-  @JoinColumn({ name: 'id' })
-  studentsData?: StudentsData;
 }

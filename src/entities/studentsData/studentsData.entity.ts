@@ -1,6 +1,5 @@
-import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
 import { ContractType, StudentStatus, StudentsDataInterface, choiceYesNO, expectedTypeWorkEntity } from '../types/studentsData';
-import { User } from '../User/User.entity';
 import { MinLength, MaxLength, Max, IsArray, IsEnum } from 'class-validator';
 
 const optionsMessage = (type: string) => (
@@ -75,8 +74,4 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @Column({ type: 'enum', enum: StudentStatus, default: StudentStatus.AVAILABLE })
   @IsEnum(StudentStatus)
   status: StudentStatus;
-
-  @OneToOne(() => User, { 'cascade': true })
-  @JoinColumn({ name: 'id' })
-  user: User;
 }
