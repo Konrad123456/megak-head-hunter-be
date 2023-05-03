@@ -7,6 +7,8 @@ export const staticText = {
         AccessDenied: 'Dostęp zabroniony.',
         UnauthorizeAccess: 'Nieautoryzowany dostęp.',
         WrrongPassword: 'Niepoprawny login lub hasło.',
-        EmailDoesntExist: 'Podany amail nie istnieje.',
+        EmailDoesntExist: 'Podany email nie istnieje.',
+        InvalidEmail: 'Podany email jest nie poprawny',
+        EmailIsEmpty: 'email nie może być pusty',
     }
 }
