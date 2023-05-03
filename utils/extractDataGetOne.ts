@@ -1,7 +1,7 @@
 import { ContractType, choiceYesNO, expectedTypeWorkEntity } from "../src/entities/types/studentsData";
 import { OneStudentResponse } from "../types";
 
-export class DestructuringToGetOne implements OneStudentResponse {
+export class ExtractDataGetOne implements OneStudentResponse {
   tel: string;
   firstName: string;
   lastName: string;

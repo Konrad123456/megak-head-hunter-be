@@ -1,7 +1,7 @@
 import { ContractType, choiceYesNO, expectedTypeWorkEntity } from "../src/entities/types/studentsData";
 import { StudentsList } from "../types";
 
-export class DestructuringToStudentsList implements StudentsList {
+export class ExtractDataToStudentsList implements StudentsList {
   id: string;
   email: string;
   courseCompletion: number;

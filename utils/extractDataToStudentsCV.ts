@@ -1,7 +1,7 @@
 import { ContractType, StudentStatus, choiceYesNO, expectedTypeWorkEntity } from "../src/entities/types/studentsData";
 import { StudentsCVResponse } from "../types";
 
-export class DestructuringToStudentsCV implements StudentsCVResponse {
+export class ExtractDataToStudentsCV implements StudentsCVResponse {
   id: string;
   email: string;
   courseCompletion: number;
