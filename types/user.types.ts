@@ -1,6 +1,7 @@
+import { StudentsRating } from '../src/entities/studentsRating/studentsRating.entity';
 import { UserInterface } from '../src/entities/types/User';
 import { StudentsDataInterface } from '../src/entities/types/studentsData';
-import { StudnetsRating } from '../src/entities/types/studentsRating';
+import { StudentsRatingInterface } from '../src/entities/types/studentsRating';
 import { TokenResponse } from './token.types';
 
 // REGISTER
@@ -26,7 +27,7 @@ export type UserLoginResponse = TokenResponse;
 type OmitPropertyOfUser = 'password' | 'token' | 'registerToken' | 'role' | 'bonusProjectUrls';
 
 export type StudentsList = Omit<
-  UserInterface & StudnetsRating,
+  UserInterface & StudentsRatingInterface,
   OmitPropertyOfUser
 >
   & Pick<StudentsDataInterface,
@@ -43,18 +44,18 @@ export type StudentsList = Omit<
 export type StudentsListResponse = Readonly<StudentsList[]>;
 
 // VIEW - STUDENET CV
-export type StudentsCVResponse = Readonly<Omit<UserInterface & StudnetsRating & StudentsDataInterface, OmitPropertyOfUser>>;
+export type StudentsCVResponse = Omit<UserInterface & StudentsRatingInterface & StudentsDataInterface, OmitPropertyOfUser>;
 
 // VIEW - One student view
 export type OneStudentResponse = Omit<StudentsDataInterface, "id" | "status"> & Pick<UserInterface, "email">;
 
-type StudntsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>;
+type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>;
 
 // VIEW STUDETS TO TALK
-export type StudntsToTalkListResposne = StudntsToTalkList[];
+export type StudntsToTalkListResposne = StudentsToTalkList[];
 
 export enum expectedTypeWorkEntity {
-  IRRELAVANT,
+  IRRELEVANT,
   ATLOCATIION,
   REDY_TO_CARRYOUT,
   ONLY_REMOTELY,
@@ -77,4 +78,9 @@ export type ChangePasswordRequest = {
   currentPassword: string;
   password: string;
   confirmPassword: string;
+}
+
+export enum UserActive {
+  NOT_ACTIVE,
+  ACTIVE,
 }
