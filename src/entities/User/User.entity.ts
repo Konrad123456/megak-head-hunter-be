@@ -19,10 +19,10 @@ export class User extends BaseEntity implements UserInterface {
     password: string
 
     @Column({ type: "varchar", length: 512, unique: true, nullable: true })
-    token: string
+    token: string | null
 
     @Column({ type: "varchar", length: 512, unique: true, nullable: true })
-    registerToken: string
+    registerToken: string | null
 
     @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
     role: Roles

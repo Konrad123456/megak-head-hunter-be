@@ -16,7 +16,7 @@ export const loginRouter = Router()
   .post('/', async (req, res) => {
     const { email, password } = req.body as UserLoginData;
 
-    if (!email || !password) throw new ValidationError(staticText.validation.WrrongPassword, 401);
+    if (!email || !password) throw new ValidationError(staticText.validation.WrongPassword, 401);
 
     const emailLowerCase = email.toLocaleLowerCase();
 
@@ -26,7 +26,7 @@ export const loginRouter = Router()
 
     const access = await bcrypt.compare(password, user.password);
 
-    if (!access) throw new ValidationError(staticText.validation.WrrongPassword, 401);
+    if (!access) throw new ValidationError(staticText.validation.WrongPassword, 401);
 
     const { accessToken, refreshToken } = createTokens(user);
     await myDataSource.getRepository(User).update({ id: user.id }, { token: refreshToken });
