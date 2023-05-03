@@ -23,7 +23,7 @@ export const loginRouter = Router()
     const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
 
     if (!user) throw new ValidationError(staticText.validation.EmailDoesntExist, 401);
-    if (!user.isActive) throw new ValidationError('Unauthorized', 401);
+    if (!user.isActive) throw new ValidationError(staticText.validation.Unauthorized, 401);
 
     const access = await bcrypt.compare(password, user.password);
 
