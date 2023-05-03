@@ -1,6 +1,6 @@
 import { UserInterface } from '../src/entities/types/User';
 import { StudentsDataInterface } from '../src/entities/types/studentsData';
-import { StudnetsRating } from '../src/entities/types/studentsRating';
+import { StudnetsRatingInterface } from '../src/entities/types/studentsRating';
 import { TokenResponse } from './token.types';
 
 // REGISTER
@@ -26,7 +26,7 @@ export type UserLoginResponse = TokenResponse;
 type OmitPropertyOfUser = 'password' | 'token' | 'registerToken' | 'role' | 'bonusProjectUrls';
 
 export type StudentsList = Omit<
-  UserInterface & StudnetsRating,
+  UserInterface & StudnetsRatingInterface,
   OmitPropertyOfUser
 >
   & Pick<StudentsDataInterface,
@@ -43,7 +43,7 @@ export type StudentsList = Omit<
 export type StudentsListResponse = Readonly<StudentsList[]>;
 
 // VIEW - STUDENET CV
-export type StudentsCVResponse = Readonly<Omit<UserInterface & StudnetsRating & StudentsDataInterface, OmitPropertyOfUser>>
+export type StudentsCVResponse = Readonly<Omit<UserInterface & StudnetsRatingInterface & StudentsDataInterface, OmitPropertyOfUser>>
 
 // VIEW - One student view
 export type OneStudentResponse = Omit<StudentsDataInterface,"id" | "status"> & Pick<UserInterface,"email">
