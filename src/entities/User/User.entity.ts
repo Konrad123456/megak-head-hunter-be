@@ -1,13 +1,16 @@
-import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn} from "typeorm"
-import { UserInterface } from "../types/User";
-import { Roles } from "../types/Roles";
-import { Contains } from 'class-validator';
-import {StudentsRating} from "../studentsRating/studentsRating.entity";
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn } from 'typeorm'
+import { UserInterface } from '../types/User';
+import { Roles } from '../types/Roles';
+import { Contains, IsEnum } from 'class-validator';
+import { StudentsRating } from '../studentsRating/studentsRating.entity';
+import { UserActive } from '../../../types';
+import { Hr } from '../hr/hr.entity';
+import { StudentsData } from '../studentsData/studentsData.entity';
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
     @PrimaryGeneratedColumn('uuid')
-    id: string
+    id: string;
 
     @Column({ type: "varchar", length: 100, unique: true })
     @Contains('@', {
@@ -26,11 +29,20 @@ export class User extends BaseEntity implements UserInterface {
 
     @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
     role: Roles;
-    
-    @Column({type: 'boolean', default: false })
+
+    @Column({ type: 'boolean', enum: UserActive, default: UserActive.NOT_ACTIVE })
+    @IsEnum(UserActive)
     isActive: boolean;
 
-    @OneToOne(() => StudentsRating)
-    @JoinColumn()
-    studentData: StudentsRating
+    @OneToOne(() => StudentsData, { 'cascade': true })
+    @JoinColumn({ name: 'id' })
+    studentsData: StudentsData;
+
+    @OneToOne(() => StudentsRating, { 'cascade': true })
+    @JoinColumn({ name: 'id' })
+    studentsRating: StudentsRating;
+
+    @OneToOne(() => Hr, { 'cascade': true })
+    @JoinColumn({ name: 'id' })
+    hr: Hr;
 }
