@@ -72,3 +72,8 @@ export enum choiceYesNO {
   NO,
   YES,
 }
+
+export enum UserActive {
+  NOT_ACTIVE,
+  ACTIVE,
+}
