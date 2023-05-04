@@ -31,19 +31,19 @@ export class User extends BaseEntity implements UserInterface {
     @IsEnum(Roles)
     role: Roles
 
-    @Column({type: 'boolean', enum: UserActive, default: UserActive.NOT_ACTIVE })
+    @Column({type: 'enum', enum: UserActive, default: UserActive.NOT_ACTIVE })
     @IsEnum(UserActive)
-    isActive: boolean;
+    isActive: UserActive
 
-    @OneToOne(() => StudentsData, { 'cascade': true })
-    @JoinColumn({ name: 'id' })
-    studentsData: StudentsData;
+    @OneToOne(() => StudentsData)
+    @JoinColumn()
+    studentsData: StudentsData
 
-    @OneToOne(() => StudentsRating, { 'cascade': true })
-    @JoinColumn({ name: 'id' })
+    @OneToOne(() => StudentsRating)
+    @JoinColumn()
     studentsRating: StudentsRating
 
-    @OneToOne(() => Hr, { 'cascade': true })
-    @JoinColumn({ name: 'id' })
+    @OneToOne(() => Hr)
+    @JoinColumn()
     hr: Hr
 }

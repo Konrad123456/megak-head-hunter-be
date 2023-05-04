@@ -44,7 +44,7 @@ export type StudentsList = Omit<
 export type StudentsListResponse = Readonly<StudentsList[]>;
 
 // VIEW - STUDENET CV
-export type StudentsCVResponse = Omit<UserInterface & StudentsRatingInterface & StudentsDataInterface, OmitPropertyOfUser>;
+export type StudentsCVResponse = Omit<UserInterface & StudnetsRatingInterface & StudentsDataInterface, OmitPropertyOfUser>;
 
 // VIEW - One student view
 export type OneStudentResponse = Omit<StudentsDataInterface, "id" | "status"> & Pick<UserInterface, "email">;

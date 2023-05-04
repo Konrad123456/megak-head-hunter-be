@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, PrimaryColumn } from 'typeorm';
+import {Entity, Column, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
 import { ContractType, StudentStatus, StudentsDataInterface, choiceYesNO, expectedTypeWorkEntity } from '../types/studentsData';
 import { MinLength, MaxLength, Max, IsArray, IsEnum } from 'class-validator';
 
@@ -8,7 +8,7 @@ const optionsMessage = (type: string) => (
 
 @Entity('students_data')
 export class StudentsData extends BaseEntity implements StudentsDataInterface {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 12, nullable: true })
@@ -28,18 +28,18 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @MaxLength(255, optionsMessage('Maximal'))
   githubUsername: string;
 
-  @Column({ type: 'simple-array', default: [] })
+  @Column({ type: 'simple-array'})
   @IsArray()
   portfolioUrls: string[];
 
-  @Column({ type: 'simple-array', default: [] })
+  @Column({ type: 'simple-array'})
   @IsArray()
   projectUrls: string[];
 
   @Column({ type: 'mediumtext' })
   bio: string;
 
-  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.IRRELAVANT, nullable: true })
+  @Column({ type: 'enum', enum: expectedTypeWorkEntity, default: expectedTypeWorkEntity.IRRELEVANT, nullable: true })
   @IsEnum(expectedTypeWorkEntity)
   expectedTypeWork: expectedTypeWorkEntity;
 

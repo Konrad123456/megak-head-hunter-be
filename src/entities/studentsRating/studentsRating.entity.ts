@@ -1,5 +1,5 @@
 import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
-import { StudentsRatingInterface } from '../types/studentsRating';
+import { StudnetsRatingInterface } from '../types/studentsRating';
 import { IsInt, Min, Max, IsArray } from 'class-validator';
 
 const optionsMessage = (type: string) => (
@@ -7,7 +7,7 @@ const optionsMessage = (type: string) => (
 )
 
 @Entity('students_rating')
-export class StudentsRating extends BaseEntity implements StudentsRatingInterface {
+export class StudentsRating extends BaseEntity implements StudnetsRatingInterface {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -12,6 +12,7 @@ export class ImportStudentsToDB {
         for ( const studentData of studentsRating ) {
             if(await this.checkUserExist(studentData)) continue;
             const user = new User();
+            user.id = randomUUID();
             user.email = studentData.email;
             user.password = randomUUID();
             user.role = Roles.STUDENT;
@@ -26,7 +27,7 @@ export class ImportStudentsToDB {
 
             await myDataSource.getRepository(StudentsRating).save(userRating);
 
-            user.studentData = userRating;
+            user.studentsRating = userRating;
 
             await myDataSource.getRepository(User).save(user);
         }
