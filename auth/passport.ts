@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy as JWTStrategy, ExtractJwt, StrategyOptions } from 'passport-jwt';
+import { ValidationError } from '../utils/errorsHandler';
 
 type JWTPayloadData = {
   id: string,
@@ -15,7 +16,7 @@ const JWTStrategyOptions: StrategyOptions = {
 
 const verifyCallback = async (payload: JWTPayloadData, cb: Function) => {
   try {
-    if (!payload?.id) throw new Error('Nieautoryzowany dostęp.')
+    if (!payload?.id) throw new ValidationError('Unauthorized.', 401);
 
     const { id, role } = payload;
 

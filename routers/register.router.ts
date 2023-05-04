@@ -4,6 +4,8 @@ import { User } from '../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
 import {ValidationError} from "../utils/errorsHandler";
 import {staticText} from "../language/en.pl";
+import { validatePassword } from '../utils/validatePassword';
+
 
 type UserRegiserData = {
   userId: string;

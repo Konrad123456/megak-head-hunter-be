@@ -9,7 +9,7 @@ import {staticText} from "../language/en.pl";
 
 type PayloadData = string | JwtPayload | undefined | UserPayloadData;
 
-export const refreshRouters = Router().get('/', async (req, res) => {
+export const refreshRouters = Router().get('/', async (req, res, next) => {
   const TOKEN_REFRESH_KEY = process.env.TOKEN_REFRESH_KEY as string;
   const refreshToken = req.cookies.refreshToken as string;
 
