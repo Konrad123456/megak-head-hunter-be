@@ -17,6 +17,9 @@ export const staticText = {
         password: {
             toShort: 'Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.',
             confirmBeTheSame: 'Podane hasła muszą być takie same.',
+        },
+        message: {
+            dataHasBeenSaved: 'Dane zostały zapisane.',
         }
     }
 }
