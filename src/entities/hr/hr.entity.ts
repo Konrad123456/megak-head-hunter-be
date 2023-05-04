@@ -1,15 +1,12 @@
-import { Entity, Column, BaseEntity, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 import { hrInterface } from '../types/hr';
 import { User } from '../User/User.entity';
 import { IsInt, Length, Min, Max } from 'class-validator';
 
 @Entity('hr')
 export class Hr extends BaseEntity implements hrInterface {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
-  @OneToOne(() => User, { 'cascade': true })
-  @JoinColumn({ name: 'id' })
-  user: User;
 
   @Column({ type: 'varchar', length: 255 })
   @Length(3, 255, {
