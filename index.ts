@@ -15,6 +15,7 @@ import { refreshRouters } from './routers/refresh.routers';
 import { errorHandler } from './utils/errorsHandler';
 import { userRouter } from './routers/user.routers';
 import {uploadRouter} from "./routers/upload.router";
+import { confirmRouter } from './routers/confirm.routers';
 
 myDataSource
     .initialize()
@@ -53,6 +54,7 @@ app.use(rateLimit({
 require('./auth/passport');
 
 // ROUTERS
+app.use('/confirm-account', confirmRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouters);
