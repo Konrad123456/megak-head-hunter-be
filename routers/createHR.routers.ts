@@ -23,12 +23,10 @@ export const createHRRouter = Router()
     const emailLowerCase = email.toLocaleLowerCase();
 
     const user = new User();
-    const hr = new Hr();
-    hr.user = user;
-
     user.email = emailLowerCase;
     user.role = Roles.HR;
-
+    
+    const hr = new Hr();
     hr.fullName = fullName;
     hr.company = company;
     hr.maxReservedStudents = maxReservedStudents;
@@ -50,9 +48,12 @@ export const createHRRouter = Router()
       throw new Error(message);
     }
 
-    const result = await myDataSource.manager.save(hr);
-    
+    await myDataSource.manager.save(hr);
+    user.hr = hr;
+    user.id = hr.id; // aby zapisac token.
     const registerToken = createRegisterToken(user);
+    
+    await myDataSource.getRepository(User).save(user);
     await myDataSource.getRepository(User).update({ id: user.id }, { registerToken });
 
     // SEND EMAIL EXAMPLE
