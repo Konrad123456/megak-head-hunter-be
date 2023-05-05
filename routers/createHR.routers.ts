@@ -63,6 +63,7 @@ export const hrRouter = Router()
     await myDataSource.getRepository(Hr).save(hr);
 
     user.hr = hr;
+    user.id = hr.id;
     user.registerToken = createRegisterToken(user);
     await myDataSource.getRepository(User).save(user);
 
