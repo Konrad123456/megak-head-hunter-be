@@ -12,7 +12,7 @@ export const staticText = {
         InvalidData: 'Niepoprawne dane.',
         UnauthorizeAccess: 'Nieautoryzowany dostęp.',
         Unauthorized: 'Nieautoryzowany dostęp.',
-        UnconfirmedAccount: 'Konto nie zostało powtierdzone.',
+        UnconfirmedAccount: 'Konto nie zostało potwierdzone.',
         UserDoesntExist: 'Podany użytkownik nie istnieje.',
         UserIsRegistered: 'Użytkownik już zarejestrowany.',
         WrongPassword: 'Niepoprawny login lub hasło.',
@@ -25,6 +25,9 @@ export const staticText = {
             DataHasBeenSaved: 'Dane zostały zapisane.',
             DataConfirmed: 'Dane potwierdzone.',
             PasswordChanged: 'Hasło zmienione.',
+            StudentWasHired: 'Kursant zatrudniony.',
+            StudentReserved: 'Kursant zarezerwowany.',
+            Success: 'Sukces.',
         },
         Db: {
             DuplicateEntry: 'Zduplikowana wartość: ',
