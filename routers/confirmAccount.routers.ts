@@ -26,7 +26,10 @@ export const confirmRouter = Router()
 
         await myDataSource.getRepository(User).update({ id }, { registerToken: null, isActive: UserActive.ACTIVE });
 
-        res.status(200).json({ message: staticText.validation.message.DataConfirmed });
+        res.status(200).json({ 
+          email: user.email,
+          message: staticText.validation.message.DataConfirmed,
+        });
       } catch (err) {
         next(err)
       }
