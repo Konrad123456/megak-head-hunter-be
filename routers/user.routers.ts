@@ -31,9 +31,14 @@ export const userRouter = Router()
     getOneStudent(req, res, next);
   })
 
+  // Students to talk
   .get('/talk/', async (req, res, next) => {
-    // Students to talk
     res.json(`Get to talk.`);
+  })
+
+  // Add Student to talk
+  .post('/talk/:id', async (req, res, next) => {
+    res.json(`Add to talk.`);
   })
 
   // add new user
