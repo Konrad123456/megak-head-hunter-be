@@ -27,7 +27,7 @@ export class User extends BaseEntity implements UserInterface {
     @Column({ type: "varchar", length: 512, unique: true, nullable: true })
     registerToken: string | null
 
-    @Column({ type: 'enum', enum: Roles, default: Roles.STUDENT })
+    @Column({ type: 'enum', enum: Roles })
     @IsEnum(Roles)
     role: Roles
 
