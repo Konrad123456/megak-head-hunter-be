@@ -18,7 +18,7 @@ export const registerRouter = Router()
   .post('/', async (req, res, next) => {
     const { userId, password, confirmPassword, registerToken } = req.body as UserRegiserData;
 
-    const user = await myDataSource.getRepository(User).findOneBy({ email });
+    const user = await myDataSource.getRepository(User).findOneBy({ id: userId });
 
     if (!user) throw new ValidationError(staticText.validation.UserDoesntExist, 422);
     if (!user.isActive) throw new ValidationError(staticText.validation.UnconfirmedAccount, 422);
