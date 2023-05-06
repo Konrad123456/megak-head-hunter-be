@@ -84,3 +84,16 @@ export enum UserActive {
   NOT_ACTIVE,
   ACTIVE,
 }
+
+export type FiltersData = Omit<
+  StudnetsRatingInterface,
+  'id' |
+  'bonusProjectUrls'
+>
+  & Pick<StudentsDataInterface,
+    'expectedTypeWork' |
+    'expectedContractType' |
+    'expectedSalary' |
+    'canTakeApprenticeship' |
+    'monthsOfCommercialExp'
+  >;
