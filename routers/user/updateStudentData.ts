@@ -6,6 +6,8 @@ import { StudentsDataInterface } from "../../src/entities/types/studentsData";
 import { UserPayloadData } from "../../utils/createTokens";
 import { StudentsData } from "../../src/entities/studentsData/studentsData.entity";
 import { validate } from "class-validator";
+import { createErrorMessage } from "../../utils/createErrorMessage";
+import { staticText } from "../../language/en.pl";
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
@@ -20,11 +22,11 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
     const { id, role } = req.user as RequestAndPayloadUser;
     const dataFE = req.body as StudentsDataInterface;
 
-    if (role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
+    if (role !== Roles.STUDENT) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
     const foundStudentData = await myDataSource.getRepository(StudentsData).findOneBy({ id });
 
-    if (!foundStudentData) throw new ValidationError('Incorrect id.', 401);
+    if (!foundStudentData) throw new ValidationError(staticText.validation.InvalidData, 401);
 
     let item: keyof StudentsDataInterface;
 
@@ -37,13 +39,7 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
     const errors = await validate(foundStudentData, validationErrorOptions);
 
     if (errors.length) {
-      const message = errors.map(err => {
-        if (!err.constraints) return;
-
-        const [, val] = Object.entries(err.constraints)[0];
-
-        return val;
-      }).join('; ');
+      const message = createErrorMessage(errors);
 
       throw new ValidationError(message, 401);
     }
@@ -55,7 +51,7 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
       .where('id = :id', { id })
       .execute();
 
-    if (!result) throw new ValidationError('Internal Server Error', 500);
+    if (!result) throw new ValidationError(staticText.errors.InternalServerError, 500);
 
     res.json({ message: 'Done.' });
   } catch (err) {

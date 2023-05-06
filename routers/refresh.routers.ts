@@ -1,13 +1,11 @@
 import { Router } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { UserPayloadData, createTokens } from '../utils/createTokens';
+import jwt from 'jsonwebtoken';
+import { createTokens } from '../utils/createTokens';
 import { myDataSource } from '../config/database.configuration';
 import { User } from '../src/entities/User/User.entity';
 import { userCookieSettings } from '../config/cookie.configuration';
-import {ValidationError} from "../utils/errorsHandler";
-import {staticText} from "../language/en.pl";
-
-type PayloadData = string | JwtPayload | undefined | UserPayloadData;
+import { ValidationError } from '../utils/errorsHandler';
+import { staticText } from '../language/en.pl';
 
 export const refreshRouters = Router().get('/', async (req, res, next) => {
   const TOKEN_REFRESH_KEY = process.env.TOKEN_REFRESH_KEY as string;

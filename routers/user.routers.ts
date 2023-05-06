@@ -5,12 +5,20 @@ import { getOneStudent } from './user/getOneStudent';
 import { getAllStudentsCount } from './user/getAllStudentsCount';
 import { updateStudentData } from './user/updateStudentData';
 import { changePassword } from './user/changePassword';
+import { addToTalk } from './user/addToTalk';
+import { getToTalkList } from './user/getToTalkList';
+import { removeFromTalk } from './user/removeFromTalk';
 
 export const userRouter = Router()
   // Get students count
   // Example url: http://localhost:3001/user/count
   .get('/count', async (req, res, next) => {
     getAllStudentsCount(req, res, next);
+  })
+
+  // Students to talk
+  .get('/talk/:page/:limit', async (req, res, next) => {
+    getToTalkList(req, res, next);
   })
 
   // Student CV
@@ -31,9 +39,10 @@ export const userRouter = Router()
     getOneStudent(req, res, next);
   })
 
-  .get('/talk/', async (req, res, next) => {
-    // Students to talk
-    res.json(`Get to talk.`);
+  
+  // Add Student to talk
+  .post('/talk', async (req, res, next) => {
+    addToTalk(req, res, next);
   })
 
   // add new user
@@ -47,6 +56,11 @@ export const userRouter = Router()
   })
 
   // update students or hr data
-  .put('/password/', async (req, res, next) => {
+  .put('/password', async (req, res, next) => {
     changePassword(req, res, next);
+  })
+
+  // update students or hr data
+  .delete('/talk', async (req, res, next) => {
+    removeFromTalk(req, res, next);
   })
