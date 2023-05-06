@@ -6,6 +6,11 @@ import { Roles } from '../src/entities/types/Roles';
 import { validate } from 'class-validator';
 import { UserPayloadData, createRegisterToken } from '../utils/createRegisterToken';
 import { ValidationError } from '../utils/errorsHandler';
+import { Mailer } from "../src/notifications/mailer/Mailer";
+import { RegisterEmail } from "../src/notifications/emails/RegisterEmail";
+import { staticText } from "../language/en.pl";
+import { UserActive } from "../types";
+import {createErrorMessage} from "../utils/createErrorMessage";
 
 type RequestBodyHR = Omit<Partial<Hr> & Partial<User>, 'id' | 'password' | 'token' | 'registerToken' | 'role'>;
 type RequestAndPayloadUser = Request & UserPayloadData;
@@ -18,56 +23,64 @@ const validationErrorOptions = {
 
 export const hrRouter = Router()
   .post('/', async (req, res) => {
-    const { id, role } = req.user as RequestAndPayloadUser
+    const { role } = req.user as RequestAndPayloadUser
 
-    if (role !== Roles.ADMIN) throw new ValidationError('Access denied.', 401);
+    if (role !== Roles.ADMIN) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
     const { email, fullName, company, maxReservedStudents } = req.body as RequestBodyHR;
 
-    if (!email || !fullName || !company || !maxReservedStudents) throw new ValidationError('Invalid data.', 400);
+    if (!email || !fullName || !company || !maxReservedStudents) throw new ValidationError(staticText.validation.InvalidData, 400);
 
     const emailLowerCase = email.toLocaleLowerCase();
-    const user = new User();
-    const hr = new Hr();
-    hr.user = user;
 
+    const userFound = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
+
+    if (userFound) throw new ValidationError(staticText.validation.UserIsRegistered)
+
+    const user = new User();
     user.email = emailLowerCase;
     user.role = Roles.HR;
+    user.isActive = UserActive.NOT_ACTIVE;
 
+    const hr = new Hr();
     hr.fullName = fullName;
     hr.company = company;
     hr.maxReservedStudents = maxReservedStudents;
 
     const errorsUser = await validate(user, validationErrorOptions);
     const errorsHr = await validate(hr, validationErrorOptions);
-
     const errors = [...errorsUser, ...errorsHr];
 
     if (errors.length) {
-      const message = errors.map(err => {
-        if (!err.constraints) return;
+        const message = createErrorMessage(errors);
 
-        const [, val] = Object.entries(err.constraints)[0];
-
-        return val;
-      }).join('; ');
-
-      throw new ValidationError(message, 401);
+        throw new ValidationError(message, 401);
     }
 
     const result = (await myDataSource.manager.save(hr)) as Hr & { code: string };
 
-    if (result?.code === 'ER_DUP_ENTRY') throw new ValidationError(`Duplicate entry '${email}'`, 500);
-    if (result?.code !== 'ER_DUP_ENTRY') throw new ValidationError('Internal Server Error', 500);
+    if (result.code === 'ER_DUP_ENTRY') throw new ValidationError(`${staticText.validation.Db.DuplicateEntry} '${email}'`, 500);
+    if (result.code && result.code !== 'ER_DUP_ENTRY') throw new ValidationError(staticText.errors.InternalServerError, 500);
 
+    await myDataSource.getRepository(Hr).save(hr);
 
-    const registerToken = createRegisterToken(user);
-    await myDataSource.getRepository(User).update({ id: user.id }, { registerToken });
+    user.hr = hr;
+    user.id = hr.id;
+    user.registerToken = createRegisterToken(user);
+    await myDataSource.getRepository(User).save(user);
 
-    // SEND EMAIL EXAMPLE
-    // sendEmailToNewUser({
-    //   userId: result.user.id,
-    // })
+    const mailer = new Mailer(
+        new RegisterEmail(
+            staticText.emails.titles.registerAccount,
+            user.id,
+            user.registerToken,
+            staticText.rolesName.hr
+        ),
+        user.email,
+        staticText.emails.titles.registerAccount
+    );
+
+    mailer.sendEmail();
 
     res.send({ message: 'Data has been saved.' })
   });

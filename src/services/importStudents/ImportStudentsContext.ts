@@ -5,6 +5,9 @@ import { StudentsRating } from "../../entities/studentsRating/studentsRating.ent
 import {Roles} from "../../entities/types/Roles";
 import {randomUUID} from "crypto";
 import {createRegisterToken} from "../../../utils/createRegisterToken";
+import {RegisterEmail} from "../../notifications/emails/RegisterEmail";
+import {staticText} from "../../../language/en.pl";
+import {Mailer} from "../../notifications/mailer/Mailer";
 
 export class ImportStudentsToDB {
 
@@ -30,6 +33,19 @@ export class ImportStudentsToDB {
             user.studentsRating = userRating;
 
             await myDataSource.getRepository(User).save(user);
+
+            const mailer = new Mailer(
+                new RegisterEmail(
+                staticText.emails.titles.registerAccount,
+                user.id,
+                user.registerToken,
+                staticText.rolesName.student
+            ),
+                user.email,
+                staticText.emails.titles.registerAccount
+            );
+
+            mailer.sendEmail();
         }
 
         return true;

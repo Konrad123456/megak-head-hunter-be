@@ -15,10 +15,7 @@ import { logoutRouters } from './routers/logout.routers';
 import { refreshRouters } from './routers/refresh.routers';
 import { errorHandler } from './utils/errorsHandler';
 import { userRouter } from './routers/user.routers';
-import {uploadRouter} from "./routers/upload.router";
-import {mailer} from "./config/mail.configuration";
-import * as path from "path";
-import {RegisterEmail, registerEmail} from "./src/notifications/emails/RegisterEmail";
+import { uploadRouter } from "./routers/upload.router";
 
 myDataSource
     .initialize()
@@ -61,21 +58,7 @@ app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouters);
 app.use('/refresh-token', refreshRouters);
-app.use('/send', async (req, res) => {
-    const html = `<h1>Hello World</h1>`;
-    const info = await mailer.sendMail({
-        from: 'Konrad@gmail.com',
-        to: 'test@gmail.com',
-        subject: 'Test',
-        html: new RegisterEmail(
-            'Test',
-            '123',
-            '321',
-            'HR'
-        ).generateHTMLTemplate(),
-    })
-    res.send({success: true})
-})
+
 app.use(passport.authenticate('jwt', { session: false }));
 app.use('/user', userRouter);
 app.use('/hr', hrRouter);

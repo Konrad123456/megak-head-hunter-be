@@ -12,15 +12,17 @@ export class RegisterEmail extends BaseEmailClass {
         this.role = role;
     }
 
-    private generateRegisterlink() {
+    private generateRegisterLink() {
         return `${process.env.APP_URL}:${process.env.APP_FE_PORT}/register/${this.userId}/${this.registerToken}`;
     }
 
     protected createBody() {
         return `
-            <p>Miło nam poinformować, że twoje konto zostało dodane z uprawnieniami ${this.role}</p>
-            <p>Aby aktywować konto i ustawić hasło prosimy przejść do linku:</p>
-            <p><a href="${this.generateRegisterlink()}">Link do rejestracji</a></p>
+            <div class="message-content">
+                <p>Miło nam poinformować, że twoje konto zostało dodane z uprawnieniami ${this.role}</p>
+                <p>Aby aktywować konto i ustawić hasło prosimy przejść do linku:</p>
+                <p><a href="${this.generateRegisterLink()}">Link do rejestracji</a></p>
+            </div>
         `;
     }
 }
