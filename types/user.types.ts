@@ -3,6 +3,7 @@ import { UserInterface } from '../src/entities/types/User';
 import { StudentsDataInterface } from '../src/entities/types/studentsData';
 import { StudnetsRatingInterface } from '../src/entities/types/studentsRating';
 import { TokenResponse } from './token.types';
+import { ToTalkInterface } from '../src/entities/types/toTalk';
 
 // REGISTER
 export type UserRegiserData = {
@@ -49,7 +50,7 @@ export type StudentsCVResponse = Omit<UserInterface & StudnetsRatingInterface & 
 // VIEW - One student view
 export type OneStudentResponse = Omit<StudentsDataInterface, "id" | "status"> & Pick<UserInterface, "email">;
 
-export type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>;
+export type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'> & Pick<ToTalkInterface, 'toDate'>;
 
 // VIEW STUDETS TO TALK
 export type StudntsToTalkListResposne = StudentsToTalkList[];
