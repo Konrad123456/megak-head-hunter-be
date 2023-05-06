@@ -24,7 +24,7 @@ export const confirmRouter = Router()
 
         if (id !== data.id) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
-        await myDataSource.getRepository(User).update({ id }, { registerToken: null, isActive: UserActive.ACTIVE });
+        await myDataSource.getRepository(User).update({ id }, { isActive: UserActive.ACTIVE });
 
         res.status(200).json({ message: staticText.validation.message.DataConfirmed });
       } catch (err) {
