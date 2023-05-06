@@ -11,21 +11,25 @@ import { Roles } from '../../src/entities/types/Roles';
 type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const removeFromTalk = async (req: Request, res: Response, next: NextFunction) => {
-  const { id, role } = req.user as RequestAndPayloadUser;
-  const StudentId = req.body.id;
+  try {
+    const { id, role } = req.user as RequestAndPayloadUser;
+    const StudentId = req.body.id;
 
-  if (role !== Roles.HR) throw new ValidationError(staticText.validation.AccessDenied, 401);
+    if (role !== Roles.HR) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
-  await myDataSource
-    .createQueryBuilder()
-    .select('totalk')
-    .delete()
-    .from(ToTalk)
-    .where('hrId = :id', { id })
-    .andWhere('students = :StudentId', { StudentId })
-    .execute()
+    await myDataSource
+      .createQueryBuilder()
+      .select('totalk')
+      .delete()
+      .from(ToTalk)
+      .where('hrId = :id', { id })
+      .andWhere('students = :StudentId', { StudentId })
+      .execute()
 
-  await myDataSource.getRepository(StudentsData).update({ id: StudentId }, { status: StudentStatus.AVAILABLE });
+    await myDataSource.getRepository(StudentsData).update({ id: StudentId }, { status: StudentStatus.AVAILABLE });
 
-  res.json({ message: staticText.validation.message.Success })
+    res.json({ message: staticText.validation.message.Success })
+  } catch (err) {
+    next(err);
+  }
 }
