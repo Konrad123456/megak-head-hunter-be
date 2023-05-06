@@ -2,6 +2,7 @@ export const staticText = {
     errors: {
         SupportFilesCsvJson: 'Nie wspierany typ pliku. Wspieramy tylko CSV/JSON',
         InternalServerError: 'Wewnętrzny błąd serwera.',
+        SendEmailError: 'Nie udało się wysłać emaila pod adres ',
     },
     validation: {
         user: {

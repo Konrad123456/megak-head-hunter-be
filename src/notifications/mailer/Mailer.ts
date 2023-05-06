@@ -1,5 +1,7 @@
 import {BaseEmailClass} from "../emails/BaseEmailClass";
 import {mailer} from "../../../config/mail.configuration";
+import {logger} from "../../../config/logger.configuration";
+import {staticText} from "../../../language/en.pl";
 
 export class Mailer {
     private readonly ourCompanyEmail: string;
@@ -23,7 +25,7 @@ export class Mailer {
                 html: this.template.generateHTMLTemplate(),
             })
         } catch (e) {
-            console.log(e);
+            logger.error(staticText.errors.SendEmailError + this.sendTo);
         }
     }
 }
