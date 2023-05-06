@@ -49,7 +49,7 @@ export type StudentsCVResponse = Omit<UserInterface & StudnetsRatingInterface & 
 // VIEW - One student view
 export type OneStudentResponse = Omit<StudentsDataInterface, "id" | "status"> & Pick<UserInterface, "email">;
 
-type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>;
+export type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>;
 
 // VIEW STUDETS TO TALK
 export type StudntsToTalkListResposne = StudentsToTalkList[];
