@@ -9,7 +9,6 @@ import { validatePassword } from '../utils/validatePassword';
 
 type UserRegiserData = {
   userId: string;
-  email: string,
   password: string;
   confirmPassword: string;
   registerToken: string | null;
@@ -17,15 +16,14 @@ type UserRegiserData = {
 
 export const registerRouter = Router()
   .post('/', async (req, res, next) => {
-    // const { userId, password, confirmPassword, registerToken } = req.body as UserRegiserData;
-    const { email, password, confirmPassword } = req.body as UserRegiserData;
+    const { userId, password, confirmPassword, registerToken } = req.body as UserRegiserData;
 
     const user = await myDataSource.getRepository(User).findOneBy({ email });
 
     if (!user) throw new ValidationError(staticText.validation.UserDoesntExist, 422);
     if (!user.isActive) throw new ValidationError(staticText.validation.UnconfirmedAccount, 422);
-    // if (user.registerToken !== registerToken || user.registerToken === null)
-    //     throw new ValidationError(staticText.validation.user.invalidToken, 422);
+    if (user.registerToken !== registerToken || user.registerToken === null)
+        throw new ValidationError(staticText.validation.user.invalidToken, 422);
 
     if (validatePassword(password)) throw new ValidationError(staticText.validation.password.toShort, 422);
 

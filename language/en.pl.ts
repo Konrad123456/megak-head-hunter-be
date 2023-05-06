@@ -11,12 +11,10 @@ export const staticText = {
         EmailDoesntExist: 'Podany email nie istnieje.',
         InvalidData: 'Niepoprawne dane.',
         UnauthorizeAccess: 'Nieautoryzowany dostęp.',
-        Unauthorized: 'Nieautoryzowany dostęp.',
         UnconfirmedAccount: 'Konto nie zostało potwierdzone.',
         UserDoesntExist: 'Podany użytkownik nie istnieje.',
         UserIsRegistered: 'Użytkownik już zarejestrowany.',
         WrongPassword: 'Niepoprawny login lub hasło.',
-        WrongRegisterToken: 'Podany użytkownik nie istnieje.',
         password: {
             toShort: 'Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.',
             confirmBeTheSame: 'Podane hasła muszą być takie same.',
