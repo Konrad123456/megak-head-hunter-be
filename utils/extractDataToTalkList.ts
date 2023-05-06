@@ -17,6 +17,7 @@ export class ExtractDataToTalkList implements StudentsToTalkList {
   canTakeApprenticeship: choiceYesNO;
   monthsOfCommercialExp: number;
   githubUsername: string;
+  toDate: Date;
 
   constructor(obj: any) {
     this.id = obj.id;
@@ -34,6 +35,7 @@ export class ExtractDataToTalkList implements StudentsToTalkList {
     this.canTakeApprenticeship = obj.canTakeApprenticeship;
     this.monthsOfCommercialExp = obj.monthsOfCommercialExp;
     this.githubUsername = obj.githubUsername;
+    this.toDate =obj.toDate;
   }
 
   returnData = () => this;

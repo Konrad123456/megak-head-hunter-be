@@ -23,7 +23,6 @@ export const getToTalkList = async (req: Request, res: Response, next: NextFunct
     .leftJoinAndSelect('user.toTalk', 'toTalk')
     .leftJoinAndSelect('user.studentsData', 'studentsData')
     .leftJoinAndSelect('user.studentsRating', 'studentsRating')
-    .leftJoinAndSelect('user.toTalk', 'toTalk')
     .where(`toTalk.hrId = '${id}'`)
     .limit(limit)
     .offset(page)
@@ -36,7 +35,7 @@ export const getToTalkList = async (req: Request, res: Response, next: NextFunct
       ...r,
       ...r.studentsData,
       ...r.studentsRating,
-      ...r.toTalk,
+      ...r.toTalk[0],
     }
 
     const result = new ExtractDataToTalkList(data).returnData();
