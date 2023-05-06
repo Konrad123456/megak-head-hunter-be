@@ -6,6 +6,7 @@ import { ChangePasswordRequest } from '../../types';
 import { User } from '../../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
 import { validatePassword } from '../../utils/validatePassword';
+import { staticText } from '../../language/en.pl';
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
@@ -16,21 +17,21 @@ export const changePassword = async (req: Request, res: Response, next: NextFunc
 
     const user = await myDataSource.getRepository(User).findOneBy({ id });
 
-    if (!user) throw new ValidationError('Sorry. User does not exist.', 401);
+    if (!user) throw new ValidationError(staticText.validation.UserDoesntExist, 401);
 
     const access = await bcrypt.compare(currentPassword, user.password);
 
     if (!access) throw new ValidationError('Incorrect password.', 401);
 
-    if (validatePassword(password)) throw new ValidationError('The password must contain between 8 and 20 characters. Lowercase and uppercase letters, numbers and special characters..', 400);
+    if (validatePassword(password)) throw new ValidationError(staticText.validation.password.toShort, 400);
 
-    if (password !== confirmPassword) throw new ValidationError('Passwords must be the same.', 400);
+    if (password !== confirmPassword) throw new ValidationError(staticText.validation.password.confirmBeTheSame, 400);
 
     const hashPass = await bcrypt.hash(password, 14);
 
     await myDataSource.getRepository(User).update({ id }, { password: hashPass });
 
-    res.status(200).json({ message: 'Password changed.' });
+    res.status(200).json({ message: staticText.validation.message.PasswordChanged });
   } catch (err) {
     next(err);
   }

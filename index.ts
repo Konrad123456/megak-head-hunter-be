@@ -15,12 +15,17 @@ import { logoutRouters } from './routers/logout.routers';
 import { refreshRouters } from './routers/refresh.routers';
 import { errorHandler } from './utils/errorsHandler';
 import { userRouter } from './routers/user.routers';
-import {uploadRouter} from "./routers/upload.router";
+import { uploadRouter } from "./routers/upload.router";
+// import { insertHrTest } from './testData/insertHrTest';
+// import { insertStudentsTest } from './testData/insertStudentsTest';
+import { confirmRouter } from './routers/confirmAccount.routers';
 
 myDataSource
     .initialize()
     .then(() => {
         console.log('Data Source has been initialized!');
+        // insertHrTest();
+        // insertStudentsTest();
     })
     .catch((err) => {
         console.error('Error during Data Source initialization:', err);
@@ -54,6 +59,7 @@ app.use(rateLimit({
 require('./auth/passport');
 
 // ROUTERS
+app.use('/confirm-account', confirmRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouters);
