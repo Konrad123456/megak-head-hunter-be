@@ -7,6 +7,7 @@ import { updateStudentData } from './user/updateStudentData';
 import { changePassword } from './user/changePassword';
 import { addToTalk } from './user/addToTalk';
 import { getToTalkList } from './user/getToTalkList';
+import { removeFromTalk } from './user/removeFromTalk';
 
 export const userRouter = Router()
   // Get students count
@@ -55,6 +56,11 @@ export const userRouter = Router()
   })
 
   // update students or hr data
-  .put('/password/', async (req, res, next) => {
+  .put('/password', async (req, res, next) => {
     changePassword(req, res, next);
+  })
+
+  // update students or hr data
+  .delete('/talk', async (req, res, next) => {
+    removeFromTalk(req, res, next);
   })

@@ -28,18 +28,20 @@ export const getToTalkList = async (req: Request, res: Response, next: NextFunct
     .offset(page)
     .getMany()
 
+
+
   if (!results) return res.json([]);
 
   const list: StudntsToTalkListResposne = results.map((r) => {
     const data = {
       ...r,
+      ...r.toTalk[0],
       ...r.studentsData,
       ...r.studentsRating,
-      ...r.toTalk[0],
     }
-
+    
     const result = new ExtractDataToTalkList(data).returnData();
-
+    
     return result;
   })
 
