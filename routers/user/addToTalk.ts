@@ -15,9 +15,9 @@ export const addToTalk = async (req: Request, res: Response, next: NextFunction)
   const { id, role } = req.user as RequestAndPayloadUser;
   const StudentId = req.body.id;
 
-  if (role !== Roles.HR) throw new ValidationError(staticText.validation.AccessDenied, 401);
-
   try {
+    if (role !== Roles.HR) throw new ValidationError(staticText.validation.AccessDenied, 401);
+
     const student = await myDataSource
       .getRepository(User)
       .findOneOrFail({ where: { id: StudentId }, relations: ['studentsData', 'studentsRating'] });
