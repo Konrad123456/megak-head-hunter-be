@@ -3,6 +3,7 @@ import fs from "fs";
 import { MulterConstants } from "../../../../config/multer.configuration";
 import { StudentsRatingWithEmail } from "../../../entities/types/studentsRating";
 import {ImportStudentsToDB} from "../ImportStudentsContext";
+import {ImportFileValidator} from "../../../../utils/Validators/ImportFileValidator";
 
 export class ImportFromJSON implements Strategy {
     private dbImporter: ImportStudentsToDB;
@@ -19,8 +20,9 @@ export class ImportFromJSON implements Strategy {
                  fs.createReadStream(MulterConstants.UPLOAD_FILE_DIR + file.originalname)
                     .on('error', error => console.error(error))
                     .on('data', async (row) => {
+                        const data = JSON.parse(row as string);
                         //@ts-ignore
-                        const data = JSON.parse(row);
+                        new ImportFileValidator(...data);
                         studentsData.push(...data);
                     })
                     .on('end', async () => {

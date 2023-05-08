@@ -19,6 +19,7 @@ import { uploadRouter } from "./routers/upload.router";
 // import { insertHrTest } from './testData/insertHrTest';
 // import { insertStudentsTest } from './testData/insertStudentsTest';
 import { confirmRouter } from './routers/confirmAccount.routers';
+import { removeStudentsFromHr } from "./cron";
 
 myDataSource
     .initialize()
@@ -72,6 +73,9 @@ app.use('/hr', hrRouter);
 app.use('/upload', uploadRouter);
 
 app.use(errorHandler);
+
+//Schedule
+removeStudentsFromHr;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listening on ${PORT} port`);
