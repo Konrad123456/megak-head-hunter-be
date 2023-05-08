@@ -4,6 +4,8 @@ import { parse } from "fast-csv";
 import { MulterConstants } from "../../../../config/multer.configuration";
 import { StudentsRatingWithEmail } from "../../../entities/types/studentsRating";
 import {ImportStudentsToDB} from "../ImportStudentsContext";
+import {ImportFileValidator} from "../../../../utils/Validators/ImportFileValidator";
+import {validate} from "class-validator";
 
 export class ImportFromCsv implements Strategy {
     private dbImporter: ImportStudentsToDB;
@@ -17,17 +19,18 @@ export class ImportFromCsv implements Strategy {
             const studentsData: StudentsRatingWithEmail[] =[];
 
             if(file && file.originalname) {
-                 fs.createReadStream(MulterConstants.UPLOAD_FILE_DIR + file.originalname)
+                 const readStream = fs.createReadStream(MulterConstants.UPLOAD_FILE_DIR + file.originalname)
                     .pipe(parse({ objectMode: true, headers: true }))
-                    .on('error', error => console.error(error))
+                    .on('error', error => reject(error))
                     .on('data', (row: StudentsRatingWithEmail) => {
+                        new ImportFileValidator(row);
                         studentsData.push(row)
                     })
                     .on('end', async () => {
                         const result = await this.dbImporter.importToDb(studentsData);
                         fs.unlinkSync(MulterConstants.UPLOAD_FILE_DIR + file.originalname);
                         resolve(result);
-                    });
+                    })
             }
         })
     }
