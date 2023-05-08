@@ -1,4 +1,4 @@
-import {Entity, Column, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 import { ContractType, StudentStatus, StudentsDataInterface, choiceYesNO, expectedTypeWorkEntity } from '../types/studentsData';
 import { MinLength, MaxLength, Max, IsArray, IsEnum } from 'class-validator';
 
@@ -28,11 +28,11 @@ export class StudentsData extends BaseEntity implements StudentsDataInterface {
   @MaxLength(255, optionsMessage('Maximal'))
   githubUsername: string;
 
-  @Column({ type: 'simple-array'})
+  @Column({ type: 'simple-array' })
   @IsArray()
   portfolioUrls: string[];
 
-  @Column({ type: 'simple-array'})
+  @Column({ type: 'simple-array' })
   @IsArray()
   projectUrls: string[];
 
