@@ -92,9 +92,11 @@ export type FiltersData = Omit<
   'bonusProjectUrls'
 >
   & Pick<StudentsDataInterface,
-    'expectedTypeWork' |
-    'expectedContractType' |
-    'expectedSalary' |
     'canTakeApprenticeship' |
     'monthsOfCommercialExp'
-  >;
+  >
+  & {
+    expectedTypeWork: expectedTypeWorkEntity[];
+    expectedContractType: ContractType[];
+    expectedSalary: [number, number];
+  }
