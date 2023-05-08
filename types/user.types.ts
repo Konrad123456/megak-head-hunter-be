@@ -1,7 +1,9 @@
+import { StudentsRating } from '../src/entities/studentsRating/studentsRating.entity';
 import { UserInterface } from '../src/entities/types/User';
 import { StudentsDataInterface } from '../src/entities/types/studentsData';
-import { StudnetsRating } from '../src/entities/types/studentsRating';
+import { StudnetsRatingInterface } from '../src/entities/types/studentsRating';
 import { TokenResponse } from './token.types';
+import { ToTalkInterface } from '../src/entities/types/toTalk';
 
 // REGISTER
 export type UserRegiserData = {
@@ -26,7 +28,7 @@ export type UserLoginResponse = TokenResponse;
 type OmitPropertyOfUser = 'password' | 'token' | 'registerToken' | 'role' | 'bonusProjectUrls';
 
 export type StudentsList = Omit<
-  UserInterface & StudnetsRating,
+  UserInterface & StudnetsRatingInterface,
   OmitPropertyOfUser
 >
   & Pick<StudentsDataInterface,
@@ -43,20 +45,20 @@ export type StudentsList = Omit<
 export type StudentsListResponse = Readonly<StudentsList[]>;
 
 // VIEW - STUDENET CV
-export type StudentsCVResponse = Readonly<Omit<UserInterface & StudnetsRating & StudentsDataInterface, OmitPropertyOfUser>>
+export type StudentsCVResponse = Omit<UserInterface & StudnetsRatingInterface & StudentsDataInterface, OmitPropertyOfUser>;
 
 // VIEW - One student view
-export type OneStudentResponse = Omit<StudentsDataInterface,"id" | "status"> & Pick<UserInterface,"email">
+export type OneStudentResponse = Omit<StudentsDataInterface, "id" | "status"> & Pick<UserInterface, "email">;
 
-type StudntsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'>
+export type StudentsToTalkList = StudentsList & Pick<StudentsDataInterface, 'githubUsername' | 'firstName' | 'lastName'> & Pick<ToTalkInterface, 'toDate'>;
 
 // VIEW STUDETS TO TALK
-export type StudntsToTalkListResposne = StudntsToTalkList[];
+export type StudntsToTalkListResposne = StudentsToTalkList[];
 
 export enum expectedTypeWorkEntity {
   IRRELEVANT,
-  ATLOCATION,
-  READY_TO_CARRYOUT,
+  ATLOCATIION,
+  REDY_TO_CARRYOUT,
   ONLY_REMOTELY,
   HYBRID,
 }
@@ -71,4 +73,15 @@ export enum ContractType {
 export enum choiceYesNO {
   NO,
   YES,
+}
+
+export type ChangePasswordRequest = {
+  currentPassword: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export enum UserActive {
+  NOT_ACTIVE,
+  ACTIVE,
 }

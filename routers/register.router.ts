@@ -2,38 +2,36 @@ import { Router } from 'express';
 import { myDataSource } from '../config/database.configuration';
 import { User } from '../src/entities/User/User.entity';
 import bcrypt from 'bcryptjs';
+import { ValidationError } from "../utils/errorsHandler";
+import { staticText } from "../language/en.pl";
+import { validatePassword } from '../utils/validatePassword';
+
 
 type UserRegiserData = {
-  email: string;
+  userId: string;
   password: string;
   confirmPassword: string;
+  registerToken: string | null;
 };
 
 export const registerRouter = Router()
   .post('/', async (req, res, next) => {
-    const { email, password, confirmPassword } = req.body as UserRegiserData;
-    const emailLowerCase = email.toLocaleLowerCase();
+    const { userId, password, confirmPassword, registerToken } = req.body as UserRegiserData;
 
-    // TODO: ErrorValidate status 400 + message
-    if (!emailLowerCase.includes('@')) throw new Error('Niepoprawny adres amail.',);
+    const user = await myDataSource.getRepository(User).findOneBy({ id: userId });
 
-    const user = await myDataSource.getRepository(User).findOneBy({ email: emailLowerCase });
+    if (!user) throw new ValidationError(staticText.validation.UserDoesntExist, 422);
+    if (!user.isActive) throw new ValidationError(staticText.validation.UnconfirmedAccount, 422);
+    if (user.registerToken !== registerToken || user.registerToken === null)
+        throw new ValidationError(staticText.validation.user.invalidToken, 422);
 
-    // TODO: ErrorValidate status 400 + message
-    if (!user) throw new Error('Podany adres email nie istnieje. Proszę skontakotwać się z administratorem serwisu.');
+    if (validatePassword(password)) throw new ValidationError(staticText.validation.password.toShort, 422);
 
-    const regx = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/;
-    const test = password.match(regx);
-
-    // TODO: ErrorValidate status 400 + message
-    if (!test) throw new Error('Hasło musi zawierać od 8 do 20 znaków. Hasło powinno zawierać małe i wielkie litery, cyfrę i znak specjalny.');
-
-
-    if (password !== confirmPassword) throw new Error('Podane hasła muszą być takie same.');
+    if (password !== confirmPassword) throw new ValidationError(staticText.validation.password.confirmBeTheSame, 422);
 
     const hashPass = await bcrypt.hash(password, 14);
 
-    await myDataSource.getRepository(User).update({ email: emailLowerCase }, { password: hashPass });
+    await myDataSource.getRepository(User).update({ id: user.id }, { password: hashPass, registerToken: null });
 
-    res.status(200).json({ message: 'Dane zapisane.' });
+    res.status(200).json({ message: staticText.validation.message.DataHasBeenSaved });
   });

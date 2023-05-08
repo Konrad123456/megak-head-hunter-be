@@ -6,6 +6,7 @@ export enum expectedTypeWorkEntity {
   HYBRID,
 }
 
+
 export enum ContractType {
   NO_PREFERENCE,
   UOP_ONLY,

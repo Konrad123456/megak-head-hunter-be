@@ -4,7 +4,7 @@ export interface UserInterface {
     id: string;
     email: string;
     password: string;
-    token: string;
-    registerToken: string;
+    token: string | null;
+    registerToken: string | null;
     role: Roles;
 }
