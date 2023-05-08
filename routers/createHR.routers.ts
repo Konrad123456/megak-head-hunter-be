@@ -6,9 +6,11 @@ import { Roles } from '../src/entities/types/Roles';
 import { validate } from 'class-validator';
 import { UserPayloadData, createRegisterToken } from '../utils/createRegisterToken';
 import { ValidationError } from '../utils/errorsHandler';
-import { staticText } from '../language/en.pl';
-import { UserActive } from '../types';
-import { createErrorMessage } from '../utils/createErrorMessage';
+import { Mailer } from "../src/notifications/mailer/Mailer";
+import { RegisterEmail } from "../src/notifications/emails/RegisterEmail";
+import { staticText } from "../language/en.pl";
+import { UserActive } from "../types";
+import {createErrorMessage} from "../utils/createErrorMessage";
 
 type RequestBodyHR = Omit<Partial<Hr> & Partial<User>, 'id' | 'password' | 'token' | 'registerToken' | 'role'>;
 type RequestAndPayloadUser = Request & UserPayloadData;
@@ -52,7 +54,7 @@ export const hrRouter = Router()
     if (errors.length) {
       const message = createErrorMessage(errors);
 
-      throw new ValidationError(message, 401);
+        throw new ValidationError(message, 401);
     }
 
     const result = (await myDataSource.manager.save(hr)) as Hr & { code: string };

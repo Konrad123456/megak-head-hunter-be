@@ -1,18 +1,20 @@
 export const staticText = {
     errors: {
-        SupportFilesCsvJson: 'Nie wspierany typ pliku. Wspieramy tylko CSV/JSON.',
+        SupportFilesCsvJson: 'Nie wspierany typ pliku. Wspieramy tylko CSV/JSON',
         InternalServerError: 'Wewnętrzny błąd serwera.',
+        SendEmailError: 'Nie udało się wysłać emaila pod adres ',
     },
     validation: {
         user: {
           invalidToken: 'Invalid register token.',
         },
+        UserDoesntExist: 'Podany użytkownik nie istnieje.',
+        WrongRegisterToken: 'Podany użytkownik nie istnieje.',
         AccessDenied: 'Dostęp zabroniony.',
         EmailDoesntExist: 'Podany email nie istnieje.',
         InvalidData: 'Niepoprawne dane.',
         UnauthorizeAccess: 'Nieautoryzowany dostęp.',
         UnconfirmedAccount: 'Konto nie zostało potwierdzone.',
-        UserDoesntExist: 'Podany użytkownik nie istnieje.',
         UserIsRegistered: 'Użytkownik już zarejestrowany.',
         WrongPassword: 'Niepoprawny login lub hasło.',
         password: {
@@ -29,6 +31,21 @@ export const staticText = {
         },
         Db: {
             DuplicateEntry: 'Zduplikowana wartość: ',
-        }
-    }
+        },
+    },
+    notificationsTexts: {
+        greetingText: 'Drogi użytkowniku,',
+        yourTeam: 'Twój oddany zespół',
+        ourTeamName: 'Team 10 MegaK',
+    },
+    emails: {
+        titles: {
+          registerAccount: 'Register Your Account',
+        },
+    },
+    rolesName: {
+        student: 'Student',
+        hr: 'HR',
+        admin: 'Admin',
+    },
 }
