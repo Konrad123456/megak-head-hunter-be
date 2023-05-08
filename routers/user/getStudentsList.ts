@@ -7,14 +7,15 @@ import { StudentStatus } from '../../src/entities/types/studentsData';
 import { UserPayloadData } from '../../utils/createTokens';
 import { ExtractDataToStudentsList } from '../../utils/extractDataToStudentsList';
 import { User } from '../../src/entities/User/User.entity';
+import { validateValueFromFE } from '../../utils/validateDataFromFE';
+import { staticText } from '../../language/en.pl';
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const getStudentsList = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
-
     const { role } = req.user as RequestAndPayloadUser
+
     const {
       courseCompletion,
       courseEngagment,
@@ -22,14 +23,22 @@ export const getStudentsList = async (req: Request, res: Response, next: NextFun
       teamProjectDegree,
       expectedTypeWork,
       expectedContractType,
-      expectedSalary, //tablica 
+      expectedSalary,
       canTakeApprenticeship,
       monthsOfCommercialExp,
     } = req.body as FiltersData;
 
-    // console.log(expectedTypeWork);
-
     if (role !== Roles.HR) throw new ValidationError('Access denied.', 401);
+
+    const [errTypeWork, allExpectedTypeWork] = validateValueFromFE(expectedTypeWork, 'expectedTypeWorkEntity');
+    if (errTypeWork) next(errTypeWork);
+
+    const [errContractType, allExpectedContractType] = validateValueFromFE(expectedContractType, 'ContractType');
+    if (errContractType) next(errContractType);
+
+    if (expectedSalary[0] > expectedSalary[1]) throw new ValidationError(staticText.validation.DoValueIsWrong, 422);
+
+    if (expectedSalary[0] < 0 || expectedSalary[1] < 0) throw new ValidationError(staticText.validation.ValuesGreaterThanZero, 422);
 
     const limit = Number(req.params.limit);
     const page = (Number(req.params.page) - 1) * limit;
@@ -46,9 +55,15 @@ export const getStudentsList = async (req: Request, res: Response, next: NextFun
       .andWhere('sr.courseEngagment >= :courseEngagment', { courseEngagment: courseEngagment || '1' })
       .andWhere('sr.projectDegree >= :projectDegree', { projectDegree: projectDegree || '1' })
       .andWhere('sr.teamProjectDegree >= :teamProjectDegree', { teamProjectDegree: teamProjectDegree || '1' })
-      .andWhere("sd.expectedTypeWork IN (:...expectedTypeWork)", { expectedTypeWork: expectedTypeWork || ['0', '1', '2', '3', '4'] })
-      .andWhere("sd.expectedContractType IN (:...expectedContractType)", { expectedContractType: expectedContractType || ['0', '1', '2', '3'] })
-      .andWhere("sd.expectedSalary BETWEEN :expectedSalaryFrom AND :expectedSalaryTo", { expectedSalaryFrom: 2000, expectedSalaryTo: 10000 })
+      .andWhere("sd.expectedTypeWork IN (:...expectedTypeWork)", {
+        expectedTypeWork: (expectedTypeWork.length) ? expectedTypeWork : allExpectedTypeWork
+      })
+      .andWhere("sd.expectedContractType IN (:...expectedContractType)", {
+        expectedContractType: (expectedContractType.length) ? expectedContractType : allExpectedContractType
+      })
+      .andWhere("sd.expectedSalary BETWEEN :expectedSalaryFrom AND :expectedSalaryTo", {
+        expectedSalaryFrom: expectedSalary[0] || 0, expectedSalaryTo: expectedSalary[1] || 999999
+      })
       .andWhere('sd.canTakeApprenticeship = :canTakeApprenticeship', { canTakeApprenticeship: canTakeApprenticeship || '0' })
       .andWhere('sd.monthsOfCommercialExp >= :monthsOfCommercialExp', { monthsOfCommercialExp: monthsOfCommercialExp || '0' })
       .orderBy('sd.lastName, sd.firstName')
