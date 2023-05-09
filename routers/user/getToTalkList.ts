@@ -34,10 +34,10 @@ export const getToTalkList = async (req: Request, res: Response, next: NextFunct
 
   const list: StudntsToTalkListResposne = results.map((r) => {
     const data = {
-      ...r,
       ...r.toTalk[0],
       ...r.studentsData,
       ...r.studentsRating,
+      ...r,
     }
     
     const result = new ExtractDataToTalkList(data).returnData();
