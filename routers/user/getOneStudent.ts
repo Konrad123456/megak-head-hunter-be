@@ -32,9 +32,9 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
     if (!results) return res.json([]);
 
     const data = {
-      ...results,
       ...results.studentsRating,
       ...results.studentsData,
+      ...results,
     }
 
     const userCV = new ExtractDataGetOne(data).returnData();

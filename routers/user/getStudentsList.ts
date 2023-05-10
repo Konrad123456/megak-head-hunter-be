@@ -35,9 +35,9 @@ export const getStudentsList = async (req: Request, res: Response, next: NextFun
 
   const list: StudentsListResponse = results.map((r) => {
     const data = {
-      ...r,
       ...r.studentsData,
       ...r.studentsRating,
+      ...r,
     }
 
     const result = new ExtractDataToStudentsList(data).returnData();
