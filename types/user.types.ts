@@ -58,7 +58,7 @@ export type StudntsToTalkListResposne = StudentsToTalkList[];
 export enum expectedTypeWorkEntity {
   IRRELEVANT,
   ATLOCATIION,
-  REDY_TO_CARRYOUT,
+  READY_TO_CARRYOUT,
   ONLY_REMOTELY,
   HYBRID,
 }
@@ -84,4 +84,10 @@ export type ChangePasswordRequest = {
 export enum UserActive {
   NOT_ACTIVE,
   ACTIVE,
+}
+
+export enum StudentStatus {
+  AVAILABLE,
+  DURING_CONVERSATION,
+  HIRED,
 }

@@ -1,6 +1,6 @@
 export enum expectedTypeWorkEntity {
   IRRELEVANT,
-  ATLOCATION,
+  ATLOCATIION,
   READY_TO_CARRYOUT,
   ONLY_REMOTELY,
   HYBRID,
