@@ -35,7 +35,7 @@ export const userRouter = Router()
 
   // Student CV
   // Example url: http://localhost:3001/user/0c43b548-8b89-4931-a8a2-715d8f531ecd
-  .get('/:id', async (req, res, next) => {
+  .get('/', async (req, res, next) => {
     getOneStudent(req, res, next);
   })
 
