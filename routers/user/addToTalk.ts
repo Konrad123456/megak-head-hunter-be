@@ -31,7 +31,7 @@ export const addToTalk = async (req: Request, res: Response, next: NextFunction)
     toTalk.students = student;
 
     await myDataSource.manager.save(toTalk);
-    await myDataSource.getRepository(StudentsData).update({ id: StudentId }, { status: StudentStatus.DURING_CONVERSATION });
+    await myDataSource.getRepository(StudentsData).update({ id: student.studentsData.id }, { status: StudentStatus.DURING_CONVERSATION });
 
     res.json({ message: staticText.validation.message.Success })
   } catch (err) {
