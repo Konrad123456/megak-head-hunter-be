@@ -40,6 +40,10 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
     for (item in dataFE) {
       if (foundStudentData.hasOwnProperty(item) && item !== 'id') {
         (foundStudentData[item] as any) = dataFE[item];
+        if (item === 'expectedTypeWork') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'expectedContractType') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'canTakeApprenticeship') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'status') (foundStudentData[item] as any) = Number(dataFE[item]);
       }
     }
 
