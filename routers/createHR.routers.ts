@@ -68,10 +68,18 @@ export const hrRouter = Router()
     user.registerToken = createRegisterToken(user);
     await myDataSource.getRepository(User).save(user);
 
-    // SEND EMAIL EXAMPLE
-    // sendEmailToNewUser({
-    //   userId: result.user.id,
-    // })
+    const mailer = new Mailer(
+        new RegisterEmail(
+            staticText.emails.titles.registerAccount,
+            user.id,
+            user.registerToken,
+            staticText.rolesName.hr
+        ),
+        user.email,
+        staticText.emails.titles.registerAccount
+    );
+
+    mailer.sendEmail();
 
     res.send({ message: staticText.validation.message.DataHasBeenSaved })
   });
