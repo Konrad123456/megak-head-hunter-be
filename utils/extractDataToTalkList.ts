@@ -35,7 +35,7 @@ export class ExtractDataToTalkList implements StudentsToTalkList {
     this.canTakeApprenticeship = obj.canTakeApprenticeship;
     this.monthsOfCommercialExp = obj.monthsOfCommercialExp;
     this.githubUsername = obj.githubUsername;
-    this.toDate =obj.toDate;
+    this.toDate = obj.toDate;
   }
 
   returnData = () => this;
