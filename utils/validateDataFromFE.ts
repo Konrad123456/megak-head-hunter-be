@@ -7,7 +7,7 @@ type ValueTypes = enums.expectedTypeWorkEntity[] | enums.ContractType[];
 export const validateValueFromFE = (val: ValueTypes, enumName: EnumsNameType) => {
   const allPossibilities = Object.keys(enums[enumName]).filter(key => Number(key) >= 0);
 
-  if (!val.length) return [null, allPossibilities];
+  if (!Array.isArray(val)) return [null, allPossibilities];
   
   const validation = (val as []).every((el) => allPossibilities.includes(el));
 
