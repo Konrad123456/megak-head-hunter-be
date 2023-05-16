@@ -16,8 +16,6 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
 
     if (role !== Roles.HR && role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
 
-    // const userId = req.params.id;
-
     const results = await myDataSource
     .getRepository(User)
     .createQueryBuilder('user')
@@ -26,7 +24,6 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
     .where('user.id = :userId', { userId: id })
     .andWhere(`user.isActive = '${UserActive.ACTIVE}'`)
     .andWhere(`user.role = '${Roles.STUDENT}'`)
-    .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
     .getOne()
 
     if (!results) return res.json([]);
