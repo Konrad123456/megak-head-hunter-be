@@ -12,18 +12,18 @@ type RequestAndPayloadUser = Request & UserPayloadData;
 
 export const getOneStudent = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { role } = req.user as RequestAndPayloadUser;
+    const { id, role } = req.user as RequestAndPayloadUser;
 
     if (role !== Roles.HR && role !== Roles.STUDENT) throw new ValidationError('Access denied.', 401);
 
-    const userId = req.params.id;
+    // const userId = req.params.id;
 
     const results = await myDataSource
     .getRepository(User)
     .createQueryBuilder('user')
     .leftJoinAndSelect('user.studentsRating', 'studentsRating')
     .leftJoinAndSelect('user.studentsData', 'studentsData')
-    .where('user.id = :userId', { userId })
+    .where('user.id = :userId', { userId: id })
     .andWhere(`user.isActive = '${UserActive.ACTIVE}'`)
     .andWhere(`user.role = '${Roles.STUDENT}'`)
     .andWhere(`studentsData.status = '${StudentStatus.AVAILABLE}'`)
@@ -32,9 +32,9 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
     if (!results) return res.json([]);
 
     const data = {
-      ...results,
       ...results.studentsRating,
       ...results.studentsData,
+      ...results,
     }
 
     const userCV = new ExtractDataGetOne(data).returnData();

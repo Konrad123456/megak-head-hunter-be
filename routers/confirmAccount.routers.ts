@@ -16,7 +16,7 @@ export const confirmRouter = Router()
     if (!id || !token) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
     if (!user) throw new ValidationError(staticText.validation.UserDoesntExist, 422);
-    if (user.isActive) throw new ValidationError(staticText.validation.UserIsRegistered, 401);
+    if (user.isActive && !user.registerToken) throw new ValidationError(staticText.validation.UserIsRegistered, 401);
 
     jwt.verify(token, TOKEN_REGISTER, async (err, data: any) => {
       try {

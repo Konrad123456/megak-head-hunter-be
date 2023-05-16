@@ -8,6 +8,7 @@ import { StudentsData } from "../../src/entities/studentsData/studentsData.entit
 import { validate } from "class-validator";
 import { createErrorMessage } from "../../utils/createErrorMessage";
 import { staticText } from "../../language/en.pl";
+import { User } from "../../src/entities/User/User.entity";
 
 type RequestAndPayloadUser = Request & UserPayloadData;
 
@@ -24,8 +25,14 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
 
     if (role !== Roles.STUDENT) throw new ValidationError(staticText.validation.AccessDenied, 401);
 
-    const foundStudentData = await myDataSource.getRepository(StudentsData).findOneBy({ id });
+    const user = await myDataSource
+      .getRepository(User)
+      .findOneOrFail({ where: { id }, relations: ['studentsData'] });
 
+    if (!user) throw new ValidationError(staticText.validation.InvalidData, 401);
+    
+    const foundStudentData = await myDataSource.getRepository(StudentsData).findOneBy({ id: user.studentsData.id })
+    
     if (!foundStudentData) throw new ValidationError(staticText.validation.InvalidData, 401);
 
     let item: keyof StudentsDataInterface;
@@ -33,6 +40,10 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
     for (item in dataFE) {
       if (foundStudentData.hasOwnProperty(item) && item !== 'id') {
         (foundStudentData[item] as any) = dataFE[item];
+        if (item === 'expectedTypeWork') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'expectedContractType') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'canTakeApprenticeship') (foundStudentData[item] as any) = Number(dataFE[item]);
+        if (item === 'status') (foundStudentData[item] as any) = Number(dataFE[item]);
       }
     }
 
@@ -48,7 +59,7 @@ export const updateStudentData = async (req: Request, res: Response, next: NextF
       .createQueryBuilder()
       .update(StudentsData)
       .set({ ...foundStudentData })
-      .where('id = :id', { id })
+      .where('id = :id', { id: foundStudentData.id })
       .execute();
 
     if (!result) throw new ValidationError(staticText.errors.InternalServerError, 500);

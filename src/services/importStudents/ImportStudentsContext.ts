@@ -8,6 +8,7 @@ import {createRegisterToken} from "../../../utils/createRegisterToken";
 import {RegisterEmail} from "../../notifications/emails/RegisterEmail";
 import {staticText} from "../../../language/en.pl";
 import {Mailer} from "../../notifications/mailer/Mailer";
+import { StudentsData } from "../../entities/studentsData/studentsData.entity";
 
 export class ImportStudentsToDB {
 
@@ -29,8 +30,12 @@ export class ImportStudentsToDB {
             userRating.bonusProjectUrls = studentData.bonusProjectUrls;
 
             await myDataSource.getRepository(StudentsRating).save(userRating);
+            
+            const sd = new StudentsData();
+            await myDataSource.getRepository(StudentsData).save(sd);
 
             user.studentsRating = userRating;
+            user.studentsData = sd;
 
             await myDataSource.getRepository(User).save(user);
 

@@ -22,9 +22,9 @@ export const getStudentCV = async (req: Request, res: Response, next: NextFuncti
     if (!results) return res.json([]);
 
     const data = {
-      ...results,
       ...results.studentsData,
       ...results.studentsRating,
+      ...results,
     }
 
     const userCV = new ExtractDataToStudentsCV(data).returnData();
