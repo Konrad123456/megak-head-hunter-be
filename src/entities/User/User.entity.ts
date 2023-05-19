@@ -10,6 +10,11 @@ import { ToTalk } from '../toTalk/toTalk';
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
+    static STUDENTS_DATA_RELATION = 'studentsData';
+    static STUDENTS_RATING_RELATION = 'studentsRating';
+    static HR_RELATION = 'hr';
+    static TO_TALK = 'toTalk';
+
     @PrimaryGeneratedColumn('uuid')
     id: string
 

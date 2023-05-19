@@ -6,6 +6,7 @@ import { User } from '../src/entities/User/User.entity';
 import { userCookieSettings } from '../config/cookie.configuration';
 import { ValidationError } from '../utils/errorsHandler';
 import { staticText } from '../language/en.pl';
+import {Roles} from "../src/entities/types/Roles";
 
 export const refreshRouters = Router().get('/', async (req, res, next) => {
   const TOKEN_REFRESH_KEY = process.env.TOKEN_REFRESH_KEY as string;
@@ -13,9 +14,22 @@ export const refreshRouters = Router().get('/', async (req, res, next) => {
 
   if (!refreshToken) throw new ValidationError(staticText.validation.UnauthorizeAccess, 401);
 
-  const user = await myDataSource.getRepository(User).findOneBy({ token: refreshToken });
+  const user = await myDataSource.getRepository(User).findOneOrFail(
+      {
+        where: { token: refreshToken },
+        relations: [User.HR_RELATION, User.STUDENTS_DATA_RELATION]
+      });
 
   if (!user) throw new ValidationError(staticText.validation.AccessDenied, 401);
+
+  let fullName = '';
+  if(user.role === Roles.STUDENT) {
+    fullName = user.studentsData.firstName + ' ' + user.studentsData.lastName;
+  } else if (user.role === Roles.HR) {
+    fullName = user.hr.fullName;
+  } else {
+    fullName = user.email;
+  }
 
   jwt.verify(refreshToken, TOKEN_REFRESH_KEY, async (err, data: any) => {
 
@@ -31,6 +45,6 @@ export const refreshRouters = Router().get('/', async (req, res, next) => {
 
     res.cookie('refreshToken', refreshToken, userCookieSettings);
 
-    res.json({ accessToken, user: { email: user.email, role: user.role } });
+    res.json({ accessToken, user: { email: user.email, role: user.role, fullName } });
   });
 });
