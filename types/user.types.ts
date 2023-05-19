@@ -91,3 +91,18 @@ export enum StudentStatus {
   DURING_CONVERSATION,
   HIRED,
 }
+
+export type FiltersData = Omit<
+  StudnetsRatingInterface,
+  'id' |
+  'bonusProjectUrls'
+>
+  & Pick<StudentsDataInterface,
+    'canTakeApprenticeship' |
+    'monthsOfCommercialExp'
+  >
+  & {
+    expectedTypeWork: expectedTypeWorkEntity[];
+    expectedContractType: ContractType[];
+    expectedSalary: [number, number];
+  }
